@@ -1,15 +1,15 @@
-from django import forms 
+from django import forms
 from Participants.models import Participant
 
-class ParticipantsForm(forms.Form):
+class ParticipantForm(forms.ModelForm):  
     class Meta:
-        models = Participant
-        fields = ['name'  , 'email'  , 'events']
+        model = Participant  
+        fields = ['name', 'email', 'events']  
         widgets = {
-            'name': forms.CharField(max_length=200),
-            'email': forms.EmailField(unique=True),
-            'events':forms.CheckboxSelectMultiple,
+            'name': forms.TextInput(attrs={'placeholder': 'Enter name', 'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter email', 'class': 'form-control'}),
+            'events': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}), 
         }
-    
-    def __init__(self , *args , **kwargs):
-        super().__init__(*args , **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

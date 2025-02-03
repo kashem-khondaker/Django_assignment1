@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% comment %} <script src="https://unpkg.com/@tailwindcss/browser@4"></script> {% endcomment %}
+</head>
+<body>
+    <h1>this is create event page .... </h1>
+    {% block content %}
+
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+            <p class="text-green-500 font-bold mb-4">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container mt-4">
+        <h2>Add New Event</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ add_events_form.as_p }}  
+            </div>
+            <button type="submit" class="btn btn-primary">Add Event</button>
+        </form>
+    </div>
+    {% endblock %}
+</body>
+</html>

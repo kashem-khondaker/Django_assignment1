@@ -1,13 +1,13 @@
 from django import forms 
-from Participants.models import Participant
+from categories.models import Categories
 
-class CategoriesForm:
+class CategoriesForm(forms.ModelForm):
     class Meta:
-        models = Participant
+        model = Categories
         fields = ['name'  , 'description' ]
         widgets = {
-            'name': forms.CharField(max_length=200),
-            'description':  forms.Textarea(),
+            'name': forms.TextInput(attrs={'placeholder': 'Enter category name'}),
+            'description': forms.Textarea(attrs={ 'rows': 4, 'placeholder': 'Enter description'}),
         }
     
     def __init__(self , *args , **kwargs):
