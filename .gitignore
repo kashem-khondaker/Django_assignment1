@@ -1,0 +1,5 @@
+__pycache__/
+
+event_venv/
+
+db.sqlite3
