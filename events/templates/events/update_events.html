@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Event</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <div class=" w-1/2 mx-auto mt-8">
+        <!-- Message Block -->
+        <div>
+            {% if messages %}
+                {% for message in messages %}
+                <p class="text-green-500 font-bold mb-4">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <!-- Form Block -->
+        <div >
+            <form method="post">
+                {% csrf_token %}
+                {{ event_form.as_p }}
+                {{event_categories_form.as_p}}
+                
+                <button 
+                    type="submit" 
+                    class="bg-rose-500 text-white p-4 mt-4  rounded-md shadow-sm "
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

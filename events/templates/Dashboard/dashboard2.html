@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Sidebar -->
+    <div class="flex">
+        <div class="w-64 bg-gray-900 text-white min-h-screen p-5">
+            <h2 class="text-2xl font-bold mb-5">Dashboard</h2>
+            <ul>
+                <li class="mb-3">
+                    <a href="" class="block px-4 py-2 rounded-lg hover:bg-gray-700">🏠 Home</a>
+                </li>
+                <li class="mb-3">
+                    <a href="/about" class="block px-4 py-2 rounded-lg hover:bg-gray-700">ℹ️ About</a>
+                </li>
+                <li class="mb-3">
+                    <a href="/services" class="block px-4 py-2 rounded-lg hover:bg-gray-700">⚙️ Services</a>
+                </li>
+                <li class="mb-3">
+                    <a href="/contact" class="block px-4 py-2 rounded-lg hover:bg-gray-700">📞 Contact</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-10 ">
+            <div class="bg-gray-50 h-full p-4">
+                {% block dashboard2 %}{% endblock  %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

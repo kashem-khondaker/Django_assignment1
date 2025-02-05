@@ -1,0 +1,166 @@
+{% extends "Dashboard/index.html" %}
+
+{% block title %}Organizer Dashboard{% endblock %}
+{% block content %}
+    <main class="container mx-auto p-6">
+        <div>
+            <div class="bg-white p-4 rounded-lg shadow-lg flex justify-around items-center mb-6">
+                
+                <div>
+                    <label for="create"><h3 class="text-lg font-semibold text-gray-800">Create </h3></label>
+                    <select name="create" id="create">
+                        <option value="add_event"><a href="{% url 'add_event' %}"> Event</a></option>
+                        <option value="add_participants"><a href="{% url 'add_event' %}"> Participate</a></option>
+                        <option value="create_categories"><a href="{% url 'add_event' %}">custom category</a></option>
+                    </select>
+                </div>
+                <div>
+                    <a href="{% url 'add_event' %}">
+                        <h3 class="text-lg font-semibold text-gray-800">Create </h3>
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'add_event' %}">
+                        <h3 class="text-lg font-semibold text-gray-800">Create </h3>
+                    </a>
+                </div>
+                
+                {% comment %} <h3 class="text-lg font-semibold text-gray-800">Filter By Categories</h3> {% endcomment %}
+                {% comment %} <p class="text-2xl text-gray-500"> {{counts.past_event}} </p> {% endcomment %}
+                <div>
+                    <form method="GET" action="{% url 'Search' %}" class=" mx-auto">
+                        <div class="flex gap-2">
+                            <input type="text" name="q" value="{{ query }}" placeholder="Search events..." class="border p-2 rounded">
+                            <button type="submit" class="bg-blue-500 text-white px-2 py-2 rounded">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8 ">
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants">
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-700">Total Participants</h3>
+                    <p class="text-2xl text-gray-500"> {{total_participants.total}}</p>
+                </div>
+            </a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events">
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Total Events</h3>
+                    <p class="text-2xl text-gray-500"> {{counts.total}} </p>
+                </div>
+            </a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Upcoming_Events">
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Upcoming Events</h3>
+                    <p class="text-2xl text-gray-500"> {{counts.upcoming}} </p>
+                </div>
+            </a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Past_Events">
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800">Past Events</h3>
+                    <p class="text-2xl text-gray-500"> {{counts.past_event}} </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold mb-4 ">Today's Events</h2>
+            <div class="bg-white p-4 rounded-lg shadow-md">
+              <ul>
+                  {% for event in today_events_participants  %}
+                  <li class="flex justify-between py-3 border-b">
+                    <span> {{event.title}} </span>
+                    <span class="text-gray-500">{{event.total_participants}} Participants</span>
+                  </li>
+                  {% endfor %}
+              </ul>
+            </div>
+        </div>
+        
+        
+        <div class="mt-10">
+            <h2 class="text-2xl font-semibold mb-6 ">Participants List</h2>
+            <div class="bg-white p-4 rounded-lg shadow-md">
+              <ul>
+                  {% for participant in participants  %}
+                  <li class="flex justify-between py-3 border-b">
+                    <span> {{participant.name}} </span>
+                    <span class="text-gray-500">{{participant.email}} </span>
+                  </li>
+                  {% endfor %}
+              </ul>
+            </div>
+        </div>
+
+        {% comment %} <section id="events" class="mb-12 mt-8">
+            <h2 class="text-2xl font-semibold mb-4">All Events</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <ul>
+                <!-- Loop through events -->
+                <li class="flex justify-between py-3 border-b">
+                  <span>Event 1</span>
+                  <span class="text-gray-500">Category: Music | 10 Participants</span>
+                </li>
+                <li class="flex justify-between py-3 border-b">
+                  <span>Event 2</span>
+                  <span class="text-gray-500">Category: Tech | 8 Participants</span>
+                </li>
+                <li class="flex justify-between py-3 border-b">
+                  <span>Event 3</span>
+                  <span class="text-gray-500">Category: Workshop | 15 Participants</span>
+                </li>
+              </ul>
+            </div>
+          </section> {% endcomment %}
+    
+        <div class=" p-4 mt-8">
+            <h1 class="text-3xl font-bold mb-4">Event List</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for event in events %}
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img class="w-full h-48 object-cover border-b" src="https://i.ibb.co.com/wFYfvwzp/card-image.jpg" alt="this is an image">
+                    <div class="p-4">
+                        <h2 class="text-xl text-black"> {{event.title}} </h2>
+                        <p class="text-gray-600 pt-2"> {{event.description}} </p>
+                        <p class="text-gray-600"> {{event.date}} at {{event.time}} </p>
+                        <p class="text-gray-600"> {{event.location}} </p>
+                        <p class="text-gray-600">Category: {{event.category.name}} </p>
+                    </div>
+
+                    {% comment %} update and delete part  {% endcomment %}
+                    <div class="px-4 pb-3 flex gap-6">
+                        <a href="{% url 'update_event' event.id %}" class="px-2 py-1 bg-green-400 text-white rounded-lg shadow-lg">Edit</a>
+                        <form action="{% url 'delete_events' event.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type='submit'  class="px-2 py-1 bg-red-400 text-white rounded-lg shadow-lg">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>   
+
+        {% comment %} <div id="event-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                <h2 class="text-xl font-semibold mb-4" id="modal-title">Create Event</h2>
+                <form id="event-form" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Event Title</label>
+                        <input type="text" name="title" class="border p-2 rounded w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea name="description" class="border p-2 rounded w-full"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded close-modal">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div> {% endcomment %}
+    </main>
+{% endblock %}

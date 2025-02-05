@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Event Management{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400&display=swap">
+    <style>
+        body {
+            font-family: 'Mona Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 container mx-auto p-6">
+    <header class="mb-8 px-4">
+        <div>
+          <nav class="flex justify-between items-center h-[92px]">
+            <div>
+              <h1 class="text-2xl font-semibold rounded-full border p-3 ">Event</h1>
+            </div>
+            <div class="flex items-center gap-4 p-3">
+              <a href="" class="p-2 rounded-full hover:bg-blue-200 font-semibold">
+                Home
+              </a>
+              <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" 
+                class="p-2 rounded-full hover:bg-blue-200 font-semibold"
+              >
+              Events
+              </a>
+              <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Events" 
+                class="p-2 rounded-full hover:bg-blue-200 font-semibold"
+              >
+              Organizer
+              </a>
+              <button
+                class="bg-blue-500 text-white rounded-full p-3"
+              >
+                Log in
+              </button>
+              
+            </div>
+            
+          </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock  %}
+    
+</body>
+</html>

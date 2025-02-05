@@ -13,13 +13,13 @@
     </div>
 
     <div class="container mt-4">
-        <h2>Add Categories</h2>
+        <h2>Update Category</h2>
         <form method="POST">
             {% csrf_token %}
             <div class="mb-3">
-                {{ add_categories.as_p }}  
+                {{ update_category_form.as_p }}  
             </div>
-            <button type="submit" class="btn btn-primary">Add Event</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     {% endblock %}
