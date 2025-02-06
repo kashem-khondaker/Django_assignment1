@@ -15,10 +15,10 @@ def Add_participants(request):
             add_participant.save()
             
             messages.success(request , "Thank you for Participate !")
-            return redirect('add_participant')
+            return redirect('Organizer_Dashboard')
         else:
             messages.error(request, "Something Went Wrong , Please try again later !")
-            return redirect('add_participant')
+            return redirect('Organizer_Dashboard')
     context = {'add_participant':add_participant}
     return render(request , 'Participants/add_participants.html' , context)
 
@@ -29,7 +29,7 @@ def update_Participants(request , id):
 
     if request.method == "POST":
         Participant_form = ParticipantForm(request.POST, instance=participant)
-        event_form = EventForm(request.POST, instance=participant.events if participant.events else None)
+        # event_form = EventForm(request.POST, instance=participant.events if participant.events else None)
         
         if Participant_form.is_valid() :
             
@@ -40,14 +40,14 @@ def update_Participants(request , id):
             participants.events.set(events)
 
             messages.success(request, "Participants Update successfully !")
-            return redirect('update_Participants', id=id )
+            return redirect('Organizer_Dashboard')
     
     context ={
         'participant':participant,
         'Participant_form': Participant_form,
     }
 
-    return render(request , 'events/update_events.html' , context)
+    return render(request , 'Participants/update_participant.html' , context)
 
 def delete_participant(request , id):
     if request.method == "POST":

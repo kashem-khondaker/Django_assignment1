@@ -22,15 +22,15 @@
             </div>
         {% endif %}
 
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Add New Event</h2>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Update Participant Form</h2>
         
         <form method="POST" class="space-y-4">
             {% csrf_token %}
             <div class="space-y-2">
-                {{ add_categories.as_p }} 
+                {{ Participant_form.as_p }} 
             </div>
             <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
-                Add Event
+                Update Participant
             </button>
         </form>
     </div>
@@ -38,3 +38,32 @@
     {% endblock %} 
 </body>
 </html>
+{% comment %} 
+{% extends "Participants/participant_list.html" %}
+
+{% block title %}Update Participant{% endblock %}
+{% block participation %}
+    <section>
+        {% block content %}
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+            <p class="text-green-500 font-bold mb-4">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container mt-4">
+        <h2>Update Participant</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ Participant_form.as_p }}  
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% endblock %}
+    </section>
+
+{% endblock %} {% endcomment %}

@@ -2,37 +2,53 @@
 
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-    <main class="container mx-auto p-6">
-        <div class=" p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 ">
-            <a href="{% url 'dashboard' %}?type=Total_Participants">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-700">Total Participants</h3>
-                    <p class="text-2xl text-gray-500"> 18 </p>
-                </div>
-            </a>
-            <a href="{% url 'dashboard' %}?type=Total_Events">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Total Events</h3>
-                    <p class="text-2xl text-gray-500"> {{counts.total}} </p>
-                </div>
-            </a>
-            <a href="{% url 'dashboard' %}?type=Upcoming_Events">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Upcoming Events</h3>
-                    <p class="text-2xl text-gray-500"> {{counts.upcoming}} </p>
-                </div>
-            </a>
-            <a href="{% url 'dashboard' %}?type=Past_Events">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Past Events</h3>
-                    <p class="text-2xl text-gray-500"> {{counts.past_event}} </p>
-                </div>
-            </a>
-        </div>
+    <main class="container mx-auto px-6">
+        
+        <section class="relative w-full h-screen flex items-center justify-center bg-gray-900">
+            <!-- Background Image -->
+            <div class="absolute inset-0">
+                <img src="https://i.ibb.co.com/r2ZMmqT2/hero-section-image.jpg" class="w-full h-full object-cover opacity-70">
+            </div>
+            
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            
+            <!-- Hero Content -->
+            <div class="relative z-10 text-center text-white px-6">
+                <h1 class="text-4xl md:text-6xl font-bold text-cyan-400">Welcome to Our Event</h1>
+                <p class="mt-4 text-lg md:text-xl">Join us for an unforgettable experience filled with music, fun, and entertainment.</p>
+                <a href="#register" class="mt-6 inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white  rounded-lg shadow-lg transition duration-300">Register Now</a>
+            </div>
+        </section>
+        
+        <div class=" p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 mt-10">
+           <a href="{% url 'dashboard' %}?type=Total_Events">
+               <div class="bg-white p-4 rounded-lg shadow-lg">
+                   <h3 class="text-lg font-semibold text-gray-800">All Events</h3>
+               </div>
+           </a>
+           <a href="{% url 'dashboard' %}?type=Upcoming_Events">
+               <div class="bg-white p-4 rounded-lg shadow-lg">
+                   <h3 class="text-lg font-semibold text-gray-800">Upcoming Events</h3>
+               </div>
+           </a>
+           <a href="{% url 'dashboard' %}?type=Past_Events">
+               <div class="bg-white p-4 rounded-lg shadow-lg">
+                   <h3 class="text-lg font-semibold text-gray-800">Past Events</h3>
+               </div>
+           </a>
+       </div>
+        
         
         
         <div class=" p-4">
-            <h1 class="text-3xl font-bold mb-4">Event List</h1>
+            <div class="mx-auto flex justify-between items-center">
+                
+                <p class="text-3xl font-bold mb-4 mb-10">Event List</p>
+                <div>
+                    <a href="http://127.0.0.1:8000/events/create-event" class="px-6 py-2 text bg-blue-600 hover:bg-blue-700 text-white  rounded-lg shadow-lg ">Join Now !</a>
+                </div>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for event in events %}
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -44,15 +60,6 @@
                         <p class="text-gray-600"> {{event.location}} </p>
                         <p class="text-gray-600">Category: {{event.category.name}} </p>
                     </div>
-
-                    {% comment %} update and delete part  {% endcomment %}
-                    {% comment %} <div class="px-4 pb-3 flex gap-6">
-                        <a href="{% url 'update_event' event.id %}" class="px-2 py-1 bg-green-600 text-white rounded-lg shadow-lg">Edit</a>
-                        <form action="{% url 'delete_events' event.id %}" method="POST">
-                            {% csrf_token %}
-                            <button type='submit'  class="px-2 py-1 bg-red-700 text-white rounded-lg shadow-lg">Delete</button>
-                        </form>
-                    </div> {% endcomment %}
                 </div>
                 {% endfor %}
             </div>

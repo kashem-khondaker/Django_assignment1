@@ -1,7 +1,8 @@
 from django import forms
 from Participants.models import Participant
+from events.forms import StyleFormMixin
 
-class ParticipantForm(forms.ModelForm):  
+class ParticipantForm(StyleFormMixin,forms.ModelForm):  
     class Meta:
         model = Participant  
         fields = ['name', 'email', 'events']  
@@ -13,3 +14,4 @@ class ParticipantForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.apply_style_widgets()

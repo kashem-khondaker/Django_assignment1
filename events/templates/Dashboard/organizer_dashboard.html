@@ -1,3 +1,365 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Event Management Dashboard{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <!-- nav bar  -->
+    {% comment %} <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-white text-lg font-bold">Event Management</a>
+            <div>
+                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="text-gray-300 hover:text-white px-4">Events</a>
+                <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="text-gray-300 hover:text-white px-4">Dashboard</a>
+                <button class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white  rounded-lg "> Log In</button>
+            </div>
+        </div>
+    </nav> {% endcomment %}
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-white text-lg font-bold">Event Management</a>
+            <div class="hidden md:flex space-x-4">
+                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="text-gray-300 hover:text-white">Events</a>
+                <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="text-gray-300 hover:text-white">Dashboard</a>
+                <button class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Log In</button>
+            </div>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
+            <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="block text-gray-300 hover:text-white">Dashboard</a>
+            <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block text-gray-300 hover:text-white">Home</a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block text-gray-300 hover:text-white">Participants</a>
+            <button class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</button>
+        </div>
+    </nav>
+    
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+    
+
+    <div class="flex h-full">
+        <!-- Sidebar -->
+         <div class="w-64 bg-gray-900 text-white p-5 space-y-6 h-screen md:block hidden">
+            <nav>
+                <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
+                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
+                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
+            </nav>
+        </div> 
+        {% comment %} <div class="flex h-screen">
+            <!-- Sidebar -->
+            <div class="w-64 bg-gray-900 text-white p-5 space-y-6 md:block hidden">
+                <nav>
+                    <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
+                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
+                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
+                </nav>
+            </div>
+        
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center p-4">
+                <button id="menu-toggle" class="text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        
+            <!-- Mobile Sidebar -->
+            <div id="mobile-sidebar" class="w-64 bg-gray-900 text-white p-5 space-y-6 md:hidden hidden fixed inset-0 z-50 transition-transform transform -translate-x-full">
+                <nav>
+                    <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
+                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
+                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
+                </nav>
+            </div>
+        </div> {% endcomment %}
+        
+        <!-- Script for toggling mobile menu -->
+        <script>
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            menuToggle.addEventListener('click', () => {
+                mobileSidebar.classList.toggle('-translate-x-full');
+            });
+        </script>
+        
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+
+            {% comment %} <header class="flex justify-between items-center bg-white p-4 shadow rounded">
+        
+                <!-- Left: Search Bar -->
+                <form method="GET" action="{% url 'Search' %}" class="flex items-center space-x-2">
+                    <input 
+                        type="text" 
+                        name="q" 
+                        value="{{ query }}"
+                        placeholder="Search events..." 
+                        class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    >
+                    <button 
+                        type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                    >
+                        Search
+                    </button>
+                </form>
+                
+                <!-- Right: + Event Button -->
+                <a href="{% url 'add_event' %}" 
+                   class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                    + Event
+                </a>
+            </header> {% endcomment %}
+            <header class="flex flex-col md:flex-row justify-between items-center bg-white p-4 shadow rounded">
+                <!-- Left: Search Bar -->
+                <form method="GET" action="{% url 'Search' %}" class="flex flex-col md:flex-row items-center space-x-0 md:space-x-2 mb-4 md:mb-0 w-full md:w-auto">
+                    <input 
+                        type="text" 
+                        name="q" 
+                        value="{{ query }}"
+                        placeholder="Search events..." 
+                        class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none w-full md:w-64"
+                    >
+                    <button 
+                        type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition w-full md:w-auto mt-2 md:mt-0"
+                    >
+                        Search
+                    </button>
+                </form>
+                
+                <!-- Right: + Event Button -->
+                <a href="{% url 'add_event' %}" 
+                   class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition w-full md:w-auto mt-4 md:mt-0">
+                    + Event
+                </a>
+            </header>
+            
+        
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 gap-6">
+                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events">
+                    <div class="bg-white p-6 shadow rounded">
+                        <h3 class="text-lg font-semibold">Total Events</h3>
+                        <p class="text-3xl font-bold">{{counts.total|default:"0" }}</p>
+                    </div>
+                </a>
+                <a href="{% url 'Organizer_Dashboard' %}?type=Today_Events">
+                    <div class="bg-white p-6 shadow rounded">
+                        <h3 class="text-lg font-semibold">Today Events</h3>
+                        <p class="text-3xl font-bold">{{counts.Today_Events|default:"0" }}</p>
+                    </div>
+                </a>
+                <a href="{% url 'Organizer_Dashboard' %}?type=Upcoming_Events">
+                    <div class="bg-white p-6 shadow rounded">
+                        <h3 class="text-lg font-semibold">Upcoming Events</h3>
+                        <p class="text-3xl font-bold">{{counts.upcoming|default:"0"}} </p>
+                    </div>
+                </a>
+                <a href="{% url 'Organizer_Dashboard' %}?type=Past_Events">
+                    <div class="bg-white p-6 shadow rounded">
+                        <h3 class="text-lg font-semibold">Past Events</h3>
+                        <p class="text-3xl font-bold"> {{counts.past_event|default:"0"}} </p>
+                    </div>
+                </a>
+            </div>
+        
+            {% if messages %}
+                <div class="mb-4 mt-2">
+                    {% for message in messages %}
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 rounded">
+                        <p class="font-semibold">{{ message }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="mt-6 bg-white p-6 shadow rounded">
+                <h2 class="text-xl font-bold mb-4">Events List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="border border-gray-300 p-2">Event Name</th>
+                                <th class="border border-gray-300 p-2">Category</th>
+                                <th class="border border-gray-300 p-2">Date at Time </th>
+                                <th class="border border-gray-300 p-2">Location</th>
+                                <th class="border border-gray-300 p-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in events %}
+                            <tr>
+                                <td class="border border-gray-300 p-2">{{ event.title }}</td>
+                                <td class="border border-gray-300 p-2">
+                                    <div class="flex items-center justify-between">
+                                        <div>{{ event.category.name }}</div>
+                                        <div>
+                                            <a href="{% url 'create_category' %}" class="text-green-500 hover:text-green-700">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </a>
+                                            <a href="{% url 'update_categories' event.id %}" class="text-blue-500 font-xl hover:text-blue-700">
+                                                <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                            </a>
+                                            <form action="{% url 'delete_events' event.id %}" method="POST" class="inline-block ml-4">
+                                                {% csrf_token %}
+                                                <button type="submit" class="text-red-500 hover:text-red-700">
+                                                    <i class="fas fa-trash"></i> <!-- Delete Icon -->
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="border border-gray-300 p-2">{{ event.date }} at {{ event.time }}</td>
+                                <td class="border border-gray-300 p-2">{{ event.location }}</td>
+                                <td class="border border-gray-300 p-2 py-4 text-right">
+                                    <a href="{% url 'update_event' event.id %}" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                    </a>
+                                    <form action="{% url 'delete_events' event.id %}" method="POST" class="inline-block ml-4">
+                                        {% csrf_token %}
+                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash"></i> <!-- Delete Icon -->
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        
+            {% comment %} <div class="mt-6 bg-white p-6 shadow rounded">
+                <h2 class="text-xl font-bold mb-4">Events List</h2>
+                <table class="w-full border-collapse border border-gray-300">
+                    
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 p-2">Event Name</th>
+                            <th class="border border-gray-300 p-2">Category</th>
+                            <th class="border border-gray-300 p-2">Date at Time </th>
+                            <th class="border border-gray-300 p-2">Location</th>
+                            <th class="border border-gray-300 p-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr>
+                            <td class="border border-gray-300 p-2">{{ event.title }}</td>
+                            <td class="border border-gray-300 p-2">
+                                <div class="flex items-center justify-between ">
+                                    <div>
+                                        {{ event.category.name }}      
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'create_category' %}" class="text-green-500 hover:text-green-700">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </a>
+                                        <a href="{% url 'update_categories' event.id %}" class="text-blue-500 font-xl hover:text-blue-700">
+                                            <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                        </a>
+                                        <form action="{% url 'delete_events' event.id %}" method="POST" class="inline-block ml-4">
+                                            {% csrf_token %}
+                                            <button type="submit" class="text-red-500 hover:text-red-700">
+                                                <i class="fas fa-trash"></i> <!-- Delete Icon -->
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="border border-gray-300 p-2">{{ event.date }} at {{ event.time }}</td>
+                            <td class="border border-gray-300 p-2">{{ event.location }}</td>
+                            <td class="border border-gray-300 p-2 py-4 text-right">
+                                <a href="{% url 'update_event' event.id %}" class="text-blue-500 hover:text-blue-700">
+                                    <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                </a>
+                                <form action="{% url 'delete_events' event.id %}" method="POST" class="inline-block ml-4">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i> <!-- Delete Icon -->
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> {% endcomment %}
+            
+
+
+
+            <div class="mt-6 bg-white p-6 shadow rounded">
+                <div class="flex justify-between items">
+                    <h2 class="text-xl font-bold mb-4">Participants List</h2>
+                <div>
+                    <a href="{% url 'add_participant' %}" 
+                   class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                    + Add
+                </a>
+                </div>
+                </div>
+                <table class="w-full border-collapse border border-gray-300">
+                    
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 p-2">Name</th>
+                            <th class="border border-gray-300 p-2">Email</th>
+                            <th class="border border-gray-300 p-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in participants  %}
+                        <tr>
+                            <td class="border border-gray-300 p-2">{{participant.name}}</td>
+                            <td class="border border-gray-300 p-2">{{participant.email}}</td>
+                            <td class="border border-gray-300 p-2 py-4 text-right">
+                                <a href="{% url 'update_Participants' participant.id %}" class="text-blue-500 hover:text-blue-700">
+                                    <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                </a>
+                                <form action="{% url 'delete_participant' participant.id %}" method="POST" class="inline-block ml-4">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i> <!-- Delete Icon -->
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+
+{% comment %} asdofadf 
 {% extends "Dashboard/index.html" %}
 
 {% block title %}Organizer Dashboard{% endblock %}
@@ -24,9 +386,6 @@
                         <h3 class="text-lg font-semibold text-gray-800">Create </h3>
                     </a>
                 </div>
-                
-                {% comment %} <h3 class="text-lg font-semibold text-gray-800">Filter By Categories</h3> {% endcomment %}
-                {% comment %} <p class="text-2xl text-gray-500"> {{counts.past_event}} </p> {% endcomment %}
                 <div>
                     <form method="GET" action="{% url 'Search' %}" class=" mx-auto">
                         <div class="flex gap-2">
@@ -94,7 +453,7 @@
             </div>
         </div>
 
-        {% comment %} <section id="events" class="mb-12 mt-8">
+        <section id="events" class="mb-12 mt-8">
             <h2 class="text-2xl font-semibold mb-4">All Events</h2>
             <div class="bg-white p-6 rounded-lg shadow-md">
               <ul>
@@ -113,7 +472,7 @@
                 </li>
               </ul>
             </div>
-          </section> {% endcomment %}
+          </section>
     
         <div class=" p-4 mt-8">
             <h1 class="text-3xl font-bold mb-4">Event List</h1>
@@ -128,8 +487,7 @@
                         <p class="text-gray-600"> {{event.location}} </p>
                         <p class="text-gray-600">Category: {{event.category.name}} </p>
                     </div>
-
-                    {% comment %} update and delete part  {% endcomment %}
+ 
                     <div class="px-4 pb-3 flex gap-6">
                         <a href="{% url 'update_event' event.id %}" class="px-2 py-1 bg-green-400 text-white rounded-lg shadow-lg">Edit</a>
                         <form action="{% url 'delete_events' event.id %}" method="POST">
@@ -142,7 +500,7 @@
             </div>
         </div>   
 
-        {% comment %} <div id="event-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div id="event-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white p-6 rounded-lg shadow-lg w-96">
                 <h2 class="text-xl font-semibold mb-4" id="modal-title">Create Event</h2>
                 <form id="event-form" method="POST">
@@ -161,6 +519,7 @@
                     </div>
                 </form>
             </div>
-        </div> {% endcomment %}
+        </div>
     </main>
 {% endblock %}
+ {% endcomment %}

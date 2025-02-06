@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Event Management{% endblock %}</title>
+    <title>{% block title %}Home{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400&display=swap">
@@ -14,8 +14,8 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 container mx-auto p-6">
-    <header class="mb-8 px-4">
+<body >
+    {% comment %} <header class="mb-8 px-4">
         <div>
           <nav class="flex justify-between items-center h-[92px]">
             <div>
@@ -45,8 +45,50 @@
             
           </nav>
         </div>
-    </header>
-
+    </header> {% endcomment %}
+    {% comment %} <nav class="bg-gray-800 p-6">
+      <div class="container mx-auto flex justify-between items-center">
+          <a href="#" class="text-white text-lg ">Event Management</a>
+          <div>
+            <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events#" class="text-gray-300 hover:text-white px-4">Events</a>
+              <a href="http://127.0.0.1:8000/events/organizer-dashboard/" class="text-gray-300 hover:text-white px-4">Dashboard</a>
+              <button class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white  rounded-lg "> Log In</button>
+          </div>
+      </div>
+    </nav> {% endcomment %}
+    <nav class="bg-gray-800 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+          <a href="#" class="text-white text-lg font-bold">Event Management</a>
+          <div class="hidden md:flex space-x-4">
+              <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="text-gray-300 hover:text-white">Events</a>
+              <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="text-gray-300 hover:text-white">Dashboard</a>
+              <button class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Log In</button>
+          </div>
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden">
+              <button id="menu-toggle" class="text-white focus:outline-none">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                  </svg>
+              </button>
+          </div>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
+          <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
+          <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="block text-gray-300 hover:text-white">Dashboard</a>
+          <button class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</button>
+      </div>
+  </nav>
+  
+  <script>
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      menuToggle.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+      });
+  </script>
+  
     {% block content %}{% endblock  %}
     
 </body>

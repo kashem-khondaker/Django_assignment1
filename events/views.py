@@ -5,7 +5,7 @@ from events.forms import EventForm
 from categories.forms import CategoriesForm
 from Participants.models import Participant
 from events.models import Event
-from datetime import date
+from datetime import date,timezone
 
 def Event_view(request):
     return render(request, 'events/events.html')  
@@ -57,40 +57,42 @@ def delete_events(request , id):
         event.delete()
 
         messages.success(request , "Event Deleted successfully !")
-        return redirect('dashboard')
+        return redirect('Organizer_Dashboard')
     else:
         messages.error(request, "Something Went Wrong !")
-        return redirect('dashboard')
+        return redirect('Organizer_Dashboard')
 
 
 def Dashboard(request):
     type = request.GET.get('type','all')
     
     base_query = Event.objects.select_related('category').prefetch_related('participants').all()
-    total_participants = Participant.objects.aggregate(total=Count('id', distinct=True))
 
+    Total_Participants = {'total': 0}
     events = base_query.none()
 
     if type == "Total_Participants":
-        events = None
+        Total_Participants = Participant.objects.aggregate(total=Count('id', distinct=True))
     elif type == "Total_Events":
         events = base_query.all()
     elif type == "Upcoming_Events":
         events = base_query.filter(date__gt = date.today())
     elif type == "Past_Events":
         events = base_query.filter(date__lt = date.today())
+    elif type == "Today_Events":
+        events = base_query.filter(date__date=date.today())
 
 
     counts = Event.objects.aggregate(
         total=Count('id'),
         upcoming=Count('id', filter=Q(date__gt=date.today())),
-        past_event=Count('id', filter=Q(date__lt=date.today()))
+        past_event=Count('id', filter=Q(date__lt=date.today())),
     )
 
-    context = { 
+    context = {
         'events':events ,
         'counts':counts,
-        'total_participants':total_participants,
+        'Total_Participant':Total_Participants
     }
     return render(request, 'Dashboard/dashboard.html' , context)
 
@@ -117,13 +119,16 @@ def Organizer_Dashboard(request):
         events = base_query.filter(date__gt = date.today())
     elif type == "Past_Events":
         events = base_query.filter(date__lt = date.today())
-
+    elif type == "Today_Events":
+        events = base_query.filter(date=date.today())
 
     counts = Event.objects.aggregate(
         total=Count('id'),
         upcoming=Count('id', filter=Q(date__gt=date.today())),
-        past_event=Count('id', filter=Q(date__lt=date.today()))
+        past_event=Count('id', filter=Q(date__lt=date.today())),
+        Today_Events=Count('id', filter=Q(date=date.today()))
     )
+    
 
     context = { 
         'events':events,
@@ -146,7 +151,10 @@ def Search(request):
     
     context = {'events': events, 'query': query}
 
-    return render(request, 'events/organizer_dashboard.html', context)
+    return render(request, 'Dashboard/organizer_dashboard.html', context)
 
 def Dashboard2(request):
     return render(request , 'Dashboard/dashboard2.html' )
+
+def Events(request):
+    return render(request, 'Dashboard/Event.html')
