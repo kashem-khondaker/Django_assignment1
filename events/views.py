@@ -20,10 +20,10 @@ def add_events(request):
             add_events_form.save()
 
             messages.success(request , "Event added successfully !")
-            return redirect('add_event')
+            return redirect('Organizer_Dashboard')
         else:
             messages.error(request , "Something Went Wrong !")
-            return redirect('Events')
+            return redirect('add_event')
     context = { 'add_events_form':add_events_form}
     return render(request , 'events/create_event.html' , context)
 
