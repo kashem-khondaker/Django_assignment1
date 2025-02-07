@@ -73,24 +73,24 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Event_management',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',  
-        'PORT': '5432',       
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Event_management',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',  
+#         'PORT': '5432',       
+#     }
+# }
 
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
-#         conn_max_age=600    
-#     )}
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
+        conn_max_age=600    
+    )}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
