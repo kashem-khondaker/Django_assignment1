@@ -64,7 +64,7 @@ def delete_events(request , id):
         return redirect('Organizer_Dashboard')
 
 
-def Dashboard(request):
+def Home(request):
     type = request.GET.get('type','all')
     
     base_query = Event.objects.select_related('category').prefetch_related('participants').all()
@@ -95,7 +95,7 @@ def Dashboard(request):
         'counts':counts,
         'Total_Participant':Total_Participants
     }
-    return render(request, 'Dashboard/dashboard.html' , context)
+    return render(request, 'Dashboard/home.html' , context)
 
 def Organizer_Dashboard(request):
     type = request.GET.get('type' , 'all')

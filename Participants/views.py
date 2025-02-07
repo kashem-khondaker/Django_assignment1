@@ -15,10 +15,10 @@ def Add_participants(request):
             add_participant.save()
             
             messages.success(request , "Thank you for Participate !")
-            return redirect('Organizer_Dashboard')
+            return redirect('add_participant')
         else:
             messages.error(request, "Something Went Wrong , Please try again later !")
-            return redirect('Organizer_Dashboard')
+            return redirect('add_participant')
     context = {'add_participant':add_participant}
     return render(request , 'Participants/add_participants.html' , context)
 
@@ -58,4 +58,4 @@ def delete_participant(request , id):
         return redirect('Organizer_Dashboard')  
     else:
         messages.error(request, "Something Went Wrong !")
-        return redirect('Organizer_Dashboard') 
+        return redirect('Organizer_Dashboard')

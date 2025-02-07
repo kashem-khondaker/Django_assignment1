@@ -39,7 +39,7 @@
         </div>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-            <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block text-gray-300 hover:text-white">Home</a>
+            <a href="http://127.0.0.1:8000/events/home/?type=Total_Events" class="block text-gray-300 hover:text-white">Home</a>
             <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
             <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block text-gray-300 hover:text-white">Participants</a>
             <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="block text-gray-300 hover:text-white">Dashboard</a>
@@ -60,7 +60,7 @@
         <!-- Sidebar -->
          <div class="w-64 bg-gray-900 text-white p-5 space-y-6 h-screen md:block hidden">
             <nav>
-                <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
+                <a href="http://127.0.0.1:8000/events/home/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
             </nav>
