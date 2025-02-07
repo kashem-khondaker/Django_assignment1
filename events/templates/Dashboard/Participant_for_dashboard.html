@@ -1,6 +1,6 @@
 
 
-    <div class="mt-6 bg-white p-6 shadow rounded">
+    {% comment %} <div class="mt-6 bg-white p-6 shadow rounded">
                 <div class="flex justify-between items">
                     <h2 class="text-xl font-bold mb-4">Participants List</h2>
                     <div>
@@ -39,4 +39,50 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div> 
+            </div>  {% endcomment %}
+
+            <div class="mt-6 bg-white p-6 shadow rounded">
+                <div class="flex justify-between items">
+                    <h2 class="text-xl font-bold mb-4">Participants List</h2>
+                    <div>
+                        <a href="{% url 'add_participant' %}" 
+                            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                            + Add 
+                        </a>
+                    </div>
+                </div>
+                <div >
+                    <table class="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-blue-100 text-gray-800">
+                                <th class="border border-gray-300 p-3 text-left">Name</th>
+                                <th class="border border-gray-300 p-3 text-left">Email</th>
+                                <th class="border border-gray-300 p-3 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for participant in participants  %}
+                            <tr class="border border-gray-300 hover:bg-gray-50 transition">
+                                <td class="border border-gray-300 p-3">{{participant.name}}</td>
+                                <td class="border border-gray-300 p-3 ">{{participant.email}}</td>
+                                <td class="border border-gray-300 p-3 text-right">
+                                    <a href="{% url 'update_Participants' participant.id %}" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{% url 'delete_participant' participant.id %}" method="POST" class="inline-block ml-4">
+                                        {% csrf_token %}
+                                        <button type="submit" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-gray-500 p-4">No events found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
