@@ -63,10 +63,9 @@ def delete_events(request , id):
         messages.error(request, "Something Went Wrong !")
         return redirect('Organizer_Dashboard')
 
-
 def Home(request):
-    type = request.GET.get('type','all')
-    
+    type = request.GET.get('type', 'all')
+
     base_query = Event.objects.select_related('category').prefetch_related('participants').all()
 
     Total_Participants = {'total': 0}
@@ -77,12 +76,11 @@ def Home(request):
     elif type == "Total_Events":
         events = base_query.all()
     elif type == "Upcoming_Events":
-        events = base_query.filter(date__gt = date.today())
+        events = base_query.filter(date__gt=date.today())
     elif type == "Past_Events":
-        events = base_query.filter(date__lt = date.today())
+        events = base_query.filter(date__lt=date.today())
     elif type == "Today_Events":
         events = base_query.filter(date__date=date.today())
-
 
     counts = Event.objects.aggregate(
         total=Count('id'),
@@ -90,12 +88,32 @@ def Home(request):
         past_event=Count('id', filter=Q(date__lt=date.today())),
     )
 
+    # Fetch the participant count for each event
+    for event in events:
+        event.total_participants = event.participants.count()
+
     context = {
-        'events':events ,
-        'counts':counts,
-        'Total_Participant':Total_Participants
+        'events': events,
+        'counts': counts,
+        'Total_Participant': Total_Participants
     }
-    return render(request, 'Dashboard/home.html' , context)
+    return render(request, 'Dashboard/home.html', context)
+
+
+
+def Details(request, id):
+    
+    event = Event.objects.select_related('category').prefetch_related('participants').filter(id=id).first()
+    participants = event.participants.all()
+    
+    context = {
+        'event': event,
+        'participants': participants, 
+        'id': event.id,  
+    }
+
+    return render(request, 'Dashboard/details.html', context)
+
 
 def Organizer_Dashboard(request):
     type = request.GET.get('type' , 'all')
@@ -104,6 +122,7 @@ def Organizer_Dashboard(request):
     base_query = Event.objects.select_related('category').prefetch_related('participants')
     
     participants = Participant.objects.distinct()
+    categories = Categories.objects.all()
     total_participants = Participant.objects.aggregate(total=Count('id', distinct=True))
     total_participants_each_category = base_query.annotate(total_participants=Count('participants'))
     
@@ -129,8 +148,6 @@ def Organizer_Dashboard(request):
         past_event=Count('id', filter=Q(date__lt=date.today())),
         Today_Events=Count('id', filter=Q(date=date.today()))
     )
-    
-
     context = { 
         'events':events,
         'today_events':today_events,
@@ -139,8 +156,10 @@ def Organizer_Dashboard(request):
         'participants':participants,
         'total_participants':total_participants,
         'total_participants_each_category':total_participants_each_category,
+        'categories':categories,
     }
     return render(request, 'Dashboard/organizer_dashboard.html' , context)
+
 
 
 def Search(request):
@@ -153,17 +172,6 @@ def Search(request):
     context = {'events': events, 'query': query}
 
     return render(request, 'Dashboard/organizer_dashboard.html', context)
-
-def Dashboard2(request):
-    return render(request , 'Dashboard/dashboard2.html' )
-
-def Events(request):
-    return render(request, 'Dashboard/Event.html')
-from django.shortcuts import render
-from events.models import Event, Categories
-
-from django.shortcuts import render
-from events.models import Event, Categories
 
 def Filter(request):
     category = request.GET.get('category')

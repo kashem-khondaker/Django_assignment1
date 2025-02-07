@@ -2,7 +2,6 @@ from django.shortcuts import render , redirect
 from django.contrib import messages
 from Participants.forms import ParticipantForm
 from Participants.models import Participant
-from events.forms import EventForm
 
 def Participants(request):
     return render(request, 'Participants/participant_list.html')  
@@ -29,8 +28,7 @@ def update_Participants(request , id):
 
     if request.method == "POST":
         Participant_form = ParticipantForm(request.POST, instance=participant)
-        # event_form = EventForm(request.POST, instance=participant.events if participant.events else None)
-        
+
         if Participant_form.is_valid() :
             
             participants = Participant_form.save(commit=False)
