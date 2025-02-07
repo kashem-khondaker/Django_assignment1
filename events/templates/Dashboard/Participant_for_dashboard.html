@@ -1,6 +1,41 @@
-{% extends "Dashboard/Participant_for_dashboard.html" %}
-{% block title %}Event Management Dashboard{% endblock %}
-{% block organizer %}
 
-
-{% endblock%}
+<div class="mt-6 bg-white p-6 shadow rounded">
+                <div class="flex justify-between items">
+                    <h2 class="text-xl font-bold mb-4">Participants List</h2>
+                <div>
+                    <a href="{% url 'add_participant' %}" 
+                   class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                    + Add
+                </a>
+                </div>
+                </div>
+                <table class="w-full border-collapse border border-gray-300">
+                    
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 p-2">Name</th>
+                            <th class="border border-gray-300 p-2">Email</th>
+                            <th class="border border-gray-300 p-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in participants  %}
+                        <tr>
+                            <td class="border border-gray-300 p-2">{{participant.name}}</td>
+                            <td class="border border-gray-300 p-2">{{participant.email}}</td>
+                            <td class="border border-gray-300 p-2 py-4 text-right">
+                                <a href="{% url 'update_Participants' participant.id %}" class="text-blue-500 hover:text-blue-700">
+                                    <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                </a>
+                                <form action="{% url 'delete_participant' participant.id %}" method="POST" class="inline-block ml-4">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i> <!-- Delete Icon -->
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> 

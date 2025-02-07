@@ -22,10 +22,10 @@
     </nav> {% endcomment %}
     <nav class="bg-gray-800 p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-white text-lg font-bold">Event Management</a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="text-white text-lg font-bold">Event Management</a>
             <div class="hidden md:flex space-x-4">
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="text-gray-300 hover:text-white">Events</a>
-                <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="text-gray-300 hover:text-white">Dashboard</a>
+                <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="text-gray-200 hover:text-white">Dashboard</a>
                 <button class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Log In</button>
             </div>
             <!-- Mobile Menu Button -->
@@ -39,11 +39,10 @@
         </div>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
-            <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="block text-gray-300 hover:text-white">Dashboard</a>
             <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block text-gray-300 hover:text-white">Home</a>
             <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
             <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block text-gray-300 hover:text-white">Participants</a>
+            <a href="http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Participants" class="block text-gray-300 hover:text-white">Dashboard</a>
             <button class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</button>
         </div>
     </nav>
@@ -66,35 +65,7 @@
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
             </nav>
         </div> 
-        {% comment %} <div class="flex h-screen">
-            <!-- Sidebar -->
-            <div class="w-64 bg-gray-900 text-white p-5 space-y-6 md:block hidden">
-                <nav>
-                    <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
-                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
-                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
-                </nav>
-            </div>
-        
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden flex items-center p-4">
-                <button id="menu-toggle" class="text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        
-            <!-- Mobile Sidebar -->
-            <div id="mobile-sidebar" class="w-64 bg-gray-900 text-white p-5 space-y-6 md:hidden hidden fixed inset-0 z-50 transition-transform transform -translate-x-full">
-                <nav>
-                    <a href="http://127.0.0.1:8000/events/dashboard/?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
-                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
-                    <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
-                </nav>
-            </div>
-        </div> {% endcomment %}
-        
+       
         <!-- Script for toggling mobile menu -->
         <script>
             const menuToggle = document.getElementById('menu-toggle');
@@ -103,37 +74,11 @@
                 mobileSidebar.classList.toggle('-translate-x-full');
             });
         </script>
-        
 
         <!-- Main Content -->
         <div class="flex-1 p-6">
-
-            {% comment %} <header class="flex justify-between items-center bg-white p-4 shadow rounded">
-        
-                <!-- Left: Search Bar -->
-                <form method="GET" action="{% url 'Search' %}" class="flex items-center space-x-2">
-                    <input 
-                        type="text" 
-                        name="q" 
-                        value="{{ query }}"
-                        placeholder="Search events..." 
-                        class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                    >
-                    <button 
-                        type="submit"
-                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-                    >
-                        Search
-                    </button>
-                </form>
-                
-                <!-- Right: + Event Button -->
-                <a href="{% url 'add_event' %}" 
-                   class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
-                    + Event
-                </a>
-            </header> {% endcomment %}
-            <header class="flex flex-col md:flex-row justify-between items-center bg-white p-4 shadow rounded">
+            {% include "Dashboard/Event.html" %}
+            {% comment %} <header class="flex flex-col md:flex-row justify-between items-center bg-white p-4 shadow rounded">
                 <!-- Left: Search Bar -->
                 <form method="GET" action="{% url 'Search' %}" class="flex flex-col md:flex-row items-center space-x-0 md:space-x-2 mb-4 md:mb-0 w-full md:w-auto">
                     <input 
@@ -157,8 +102,6 @@
                     + Event
                 </a>
             </header>
-            
-        
             <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 gap-6">
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events">
                     <div class="bg-white p-6 shadow rounded">
@@ -184,9 +127,9 @@
                         <p class="text-3xl font-bold"> {{counts.past_event|default:"0"}} </p>
                     </div>
                 </a>
-            </div>
+            </div> {% endcomment %}
         
-            {% if messages %}
+            {% comment %} {% if messages %}
                 <div class="mb-4 mt-2">
                     {% for message in messages %}
                     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 rounded">
@@ -194,10 +137,31 @@
                     </div>
                     {% endfor %}
                 </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
+            {% include "Dashboard/Participant_for_dashboard.html"%}
+            {% comment %} <div class="mt-6 bg-white p-6 shadow rounded">
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Events List</h2>
+                    <form method="GET">
+                        <label for="category">Category:</label>
+                        <select name="category" id="category">
+                            <option value="">All</option>
+                            <option value="conference">Conference</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="meetup">Meetup</option>
+                        </select>
+                        <button type="submit">Filter</button>
+                    </form>
 
-            <div class="mt-6 bg-white p-6 shadow rounded">
-                <h2 class="text-xl font-bold mb-4">Events List</h2>
+                    <form action="">
+                        
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" name="start_date" id="start_date">
+
+                        <label for="end_date">End Date:</label>
+                        <input type="date" name="end_date" id="end_date">
+                    </form>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full border-collapse border border-gray-300">
                         <thead>
@@ -250,70 +214,10 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            
-        
-            {% comment %} <div class="mt-6 bg-white p-6 shadow rounded">
-                <h2 class="text-xl font-bold mb-4">Events List</h2>
-                <table class="w-full border-collapse border border-gray-300">
-                    
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="border border-gray-300 p-2">Event Name</th>
-                            <th class="border border-gray-300 p-2">Category</th>
-                            <th class="border border-gray-300 p-2">Date at Time </th>
-                            <th class="border border-gray-300 p-2">Location</th>
-                            <th class="border border-gray-300 p-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for event in events %}
-                        <tr>
-                            <td class="border border-gray-300 p-2">{{ event.title }}</td>
-                            <td class="border border-gray-300 p-2">
-                                <div class="flex items-center justify-between ">
-                                    <div>
-                                        {{ event.category.name }}      
-                                    </div>
-                                    <div>
-                                        <a href="{% url 'create_category' %}" class="text-green-500 hover:text-green-700">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </a>
-                                        <a href="{% url 'update_categories' event.id %}" class="text-blue-500 font-xl hover:text-blue-700">
-                                            <i class="fas fa-edit"></i> <!-- Edit Icon -->
-                                        </a>
-                                        <form action="{% url 'delete_events' event.id %}" method="POST" class="inline-block ml-4">
-                                            {% csrf_token %}
-                                            <button type="submit" class="text-red-500 hover:text-red-700">
-                                                <i class="fas fa-trash"></i> <!-- Delete Icon -->
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="border border-gray-300 p-2">{{ event.date }} at {{ event.time }}</td>
-                            <td class="border border-gray-300 p-2">{{ event.location }}</td>
-                            <td class="border border-gray-300 p-2 py-4 text-right">
-                                <a href="{% url 'update_event' event.id %}" class="text-blue-500 hover:text-blue-700">
-                                    <i class="fas fa-edit"></i> <!-- Edit Icon -->
-                                </a>
-                                <form action="{% url 'delete_events' event.id %}" method="POST" class="inline-block ml-4">
-                                    {% csrf_token %}
-                                    <button type="submit" class="text-red-500 hover:text-red-700">
-                                        <i class="fas fa-trash"></i> <!-- Delete Icon -->
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div> {% endcomment %}
             
 
-
-
-            <div class="mt-6 bg-white p-6 shadow rounded">
+            {% comment %} <div class="mt-6 bg-white p-6 shadow rounded">
                 <div class="flex justify-between items">
                     <h2 class="text-xl font-bold mb-4">Participants List</h2>
                 <div>
@@ -352,174 +256,9 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
+            </div> {% endcomment %}
 
         </div>
     </div>
 </body>
 </html>
-
-{% comment %} asdofadf 
-{% extends "Dashboard/index.html" %}
-
-{% block title %}Organizer Dashboard{% endblock %}
-{% block content %}
-    <main class="container mx-auto p-6">
-        <div>
-            <div class="bg-white p-4 rounded-lg shadow-lg flex justify-around items-center mb-6">
-                
-                <div>
-                    <label for="create"><h3 class="text-lg font-semibold text-gray-800">Create </h3></label>
-                    <select name="create" id="create">
-                        <option value="add_event"><a href="{% url 'add_event' %}"> Event</a></option>
-                        <option value="add_participants"><a href="{% url 'add_event' %}"> Participate</a></option>
-                        <option value="create_categories"><a href="{% url 'add_event' %}">custom category</a></option>
-                    </select>
-                </div>
-                <div>
-                    <a href="{% url 'add_event' %}">
-                        <h3 class="text-lg font-semibold text-gray-800">Create </h3>
-                    </a>
-                </div>
-                <div>
-                    <a href="{% url 'add_event' %}">
-                        <h3 class="text-lg font-semibold text-gray-800">Create </h3>
-                    </a>
-                </div>
-                <div>
-                    <form method="GET" action="{% url 'Search' %}" class=" mx-auto">
-                        <div class="flex gap-2">
-                            <input type="text" name="q" value="{{ query }}" placeholder="Search events..." class="border p-2 rounded">
-                            <button type="submit" class="bg-blue-500 text-white px-2 py-2 rounded">Search</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-8 ">
-            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-700">Total Participants</h3>
-                    <p class="text-2xl text-gray-500"> {{total_participants.total}}</p>
-                </div>
-            </a>
-            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Total Events</h3>
-                    <p class="text-2xl text-gray-500"> {{counts.total}} </p>
-                </div>
-            </a>
-            <a href="{% url 'Organizer_Dashboard' %}?type=Upcoming_Events">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Upcoming Events</h3>
-                    <p class="text-2xl text-gray-500"> {{counts.upcoming}} </p>
-                </div>
-            </a>
-            <a href="{% url 'Organizer_Dashboard' %}?type=Past_Events">
-                <div class="bg-white p-4 rounded-lg shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Past Events</h3>
-                    <p class="text-2xl text-gray-500"> {{counts.past_event}} </p>
-                </div>
-            </a>
-        </div>
-
-        <div class="mt-8">
-            <h2 class="text-2xl font-semibold mb-4 ">Today's Events</h2>
-            <div class="bg-white p-4 rounded-lg shadow-md">
-              <ul>
-                  {% for event in today_events_participants  %}
-                  <li class="flex justify-between py-3 border-b">
-                    <span> {{event.title}} </span>
-                    <span class="text-gray-500">{{event.total_participants}} Participants</span>
-                  </li>
-                  {% endfor %}
-              </ul>
-            </div>
-        </div>
-        
-        
-        <div class="mt-10">
-            <h2 class="text-2xl font-semibold mb-6 ">Participants List</h2>
-            <div class="bg-white p-4 rounded-lg shadow-md">
-              <ul>
-                  {% for participant in participants  %}
-                  <li class="flex justify-between py-3 border-b">
-                    <span> {{participant.name}} </span>
-                    <span class="text-gray-500">{{participant.email}} </span>
-                  </li>
-                  {% endfor %}
-              </ul>
-            </div>
-        </div>
-
-        <section id="events" class="mb-12 mt-8">
-            <h2 class="text-2xl font-semibold mb-4">All Events</h2>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <ul>
-                <!-- Loop through events -->
-                <li class="flex justify-between py-3 border-b">
-                  <span>Event 1</span>
-                  <span class="text-gray-500">Category: Music | 10 Participants</span>
-                </li>
-                <li class="flex justify-between py-3 border-b">
-                  <span>Event 2</span>
-                  <span class="text-gray-500">Category: Tech | 8 Participants</span>
-                </li>
-                <li class="flex justify-between py-3 border-b">
-                  <span>Event 3</span>
-                  <span class="text-gray-500">Category: Workshop | 15 Participants</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-    
-        <div class=" p-4 mt-8">
-            <h1 class="text-3xl font-bold mb-4">Event List</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {% for event in events %}
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img class="w-full h-48 object-cover border-b" src="https://i.ibb.co.com/wFYfvwzp/card-image.jpg" alt="this is an image">
-                    <div class="p-4">
-                        <h2 class="text-xl text-black"> {{event.title}} </h2>
-                        <p class="text-gray-600 pt-2"> {{event.description}} </p>
-                        <p class="text-gray-600"> {{event.date}} at {{event.time}} </p>
-                        <p class="text-gray-600"> {{event.location}} </p>
-                        <p class="text-gray-600">Category: {{event.category.name}} </p>
-                    </div>
- 
-                    <div class="px-4 pb-3 flex gap-6">
-                        <a href="{% url 'update_event' event.id %}" class="px-2 py-1 bg-green-400 text-white rounded-lg shadow-lg">Edit</a>
-                        <form action="{% url 'delete_events' event.id %}" method="POST">
-                            {% csrf_token %}
-                            <button type='submit'  class="px-2 py-1 bg-red-400 text-white rounded-lg shadow-lg">Delete</button>
-                        </form>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>   
-
-        <div id="event-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 class="text-xl font-semibold mb-4" id="modal-title">Create Event</h2>
-                <form id="event-form" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Event Title</label>
-                        <input type="text" name="title" class="border p-2 rounded w-full">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea name="description" class="border p-2 rounded w-full"></textarea>
-                    </div>
-                    <div class="flex justify-end gap-2">
-                        <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded close-modal">Cancel</button>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
-{% endblock %}
- {% endcomment %}

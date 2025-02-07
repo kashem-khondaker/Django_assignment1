@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.db.models import Q , Count
 from events.forms import EventForm
 from categories.forms import CategoriesForm
+from categories.models import Categories
 from Participants.models import Participant
 from events.models import Event
 from datetime import date,timezone
@@ -99,6 +100,7 @@ def Dashboard(request):
 def Organizer_Dashboard(request):
     type = request.GET.get('type' , 'all')
     
+    
     base_query = Event.objects.select_related('category').prefetch_related('participants')
     
     participants = Participant.objects.distinct()
@@ -107,7 +109,6 @@ def Organizer_Dashboard(request):
     
     today_events = base_query.filter(date = date.today())
     today_events_participants = today_events.annotate(total_participants=Count('participants')).values('id', 'title', 'total_participants')
-
     
     events = base_query.none()
 
@@ -158,3 +159,25 @@ def Dashboard2(request):
 
 def Events(request):
     return render(request, 'Dashboard/Event.html')
+from django.shortcuts import render
+from events.models import Event, Categories
+
+from django.shortcuts import render
+from events.models import Event, Categories
+
+def Filter(request):
+    category = request.GET.get('category')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    events = Event.objects.all()
+    categories = Categories.objects.all()
+
+    
+    if category:
+        events = events.filter(category_id=category)
+
+    if start_date and end_date:
+        events = events.filter(date__range=[start_date, end_date])
+
+    return render(request, 'Dashboard/organizer_dashboard.html', {'events': events, "categories": categories})
