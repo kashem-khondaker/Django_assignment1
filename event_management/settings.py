@@ -73,16 +73,16 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Event_management',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',  
-        'PORT': '5432',       
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Event_management',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',  
+#         'PORT': '5432',       
+#     }
+# }
 
 # Event_management
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases

@@ -10,7 +10,8 @@
 </head>
 <body class="bg-gray-100">
 
-    <nav class="bg-gray-800 p-6">
+    <!-- Navbar -->
+    <nav class="bg-gray-800 p-4 fixed w-full top-0 z-10">
         <div class="container mx-auto flex justify-between items-center">
             <a href="{% url 'home' %}?type=Total_Events" class="text-white text-lg font-bold">Event Management</a>
             <div class="hidden md:flex items-center space-x-4">
@@ -27,59 +28,27 @@
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
-            <a href="{% url 'home' %}" class="block text-gray-300 hover:text-white">Home</a>
-            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Events</a>
-            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block text-gray-300 hover:text-white">Participants</a>
-            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Dashboard</a>
-            <button class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</button>
-        </div>
     </nav>
-    
-    <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
-    
-    <div class="flex h-full">
-        <!-- Sidebar -->
-         {% comment %} <div class="w-64 bg-gray-900 text-white p-5 space-y-6 h-screen md:block hidden">
-            <nav>
-                <a href="{% url 'home' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
-                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
-                <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
-            </nav>
-        </div>  {% endcomment %}
 
-        <div class="w-64 bg-gray-900 text-white p-5 space-y-6 h-screen overflow-y-auto md:block hidden">
+    <!-- Full Layout Container -->
+    <div class="flex">
+        
+        <!-- Sidebar (Fixed Sidebar under Navbar) -->
+        <div class="w-64 bg-gray-900 text-white fixed top-16 left-0 h-screen p-5 space-y-6 hidden md:block">
             <nav>
                 <a href="{% url 'home' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
                 <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
             </nav>
         </div>
-       
-        <!-- Script for toggling mobile menu -->
-        <script>
-            const menuToggle = document.getElementById('menu-toggle');
-            const mobileSidebar = document.getElementById('mobile-sidebar');
-            menuToggle.addEventListener('click', () => {
-                mobileSidebar.classList.toggle('-translate-x-full');
-            });
-        </script>
 
         <!-- Main Content -->
-        <div class="flex-1 p-6">
+        <div class="flex-1 flex flex-col md:ml-64 p-6 mt-16">
             {% include "Dashboard/Event.html" %}
-
             {% include "Dashboard/Participant_for_dashboard.html"%}
 
             <div class="mt-6 bg-white p-6 shadow rounded">
-                <div class="flex justify-between items">
+                <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold mb-4">Category List</h2>
                     <div>
                         <a href="{% url 'create_category' %}" 
@@ -88,7 +57,7 @@
                         </a>
                     </div>
                 </div>
-                <div >
+                <div>
                     <table class="w-full border-collapse border border-gray-300">
                         <thead>
                             <tr class="bg-blue-100 text-gray-800">
@@ -98,10 +67,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for category in categories  %}
+                            {% for category in categories %}
                             <tr class="border border-gray-300 hover:bg-gray-50 transition">
-                                <td class="border border-gray-300 p-3">{{category.name}}</td>
-                                <td class="border border-gray-300 p-3 ">{{category.description}}</td>
+                                <td class="border border-gray-300 p-3">{{ category.name }}</td>
+                                <td class="border border-gray-300 p-3">{{ category.description }}</td>
                                 <td class="border border-gray-300 p-3 text-right">
                                     <a href="{% url 'update_categories' category.id %}" class="text-blue-500 hover:text-blue-700">
                                         <i class="fas fa-edit"></i>
@@ -123,8 +92,35 @@
                     </table>
                 </div>
             </div>
-            
         </div>
     </div>
+
+    <!-- Mobile Sidebar (Toggle) -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden" id="mobile-sidebar-overlay"></div>
+    <div class="fixed top-0 left-0 w-64 h-full bg-gray-900 text-white p-5 transform -translate-x-full transition-transform duration-300 z-30" id="mobile-sidebar">
+        <nav>
+            <a href="{% url 'home' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Home</a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events" class="block py-2 px-4 rounded hover:bg-gray-700">Events</a>
+            <a href="{% url 'Organizer_Dashboard' %}?type=Total_Participants" class="block py-2 px-4 rounded hover:bg-gray-700">Participants</a>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('mobile-sidebar-overlay');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            mobileMenu.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+    </script>
+
 </body>
 </html>
