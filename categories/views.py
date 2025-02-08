@@ -17,10 +17,10 @@ def Create_categories(request):
             add_categories_form.save()
 
             messages.success(request , "Categories created successfully !")
-            return redirect('http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Events')
+            return redirect('Organizer_Dashboard')
         else:
             messages.error(request , 'Something Went Wrong !')
-            return redirect('http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Events')
+            return redirect('Organizer_Dashboard')
     context = {  'add_categories':add_categories_form}
     return render(request , 'categories/create_categories.html' , context)
 
@@ -35,7 +35,7 @@ def update_categories(request , id):
         if update_category_form.is_valid() :
             update_category_form.save()
             messages.success(request, "Categories Update successfully !")
-            return redirect('http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Events', id=id ) 
+            return redirect('Organizer_Dashboard') 
     
     context = {'update_category_form':update_category_form}
     
@@ -47,8 +47,8 @@ def delete_Category(request , id):
         category.delete()
 
         messages.success(request , "Category Deleted successfully !")
-        return redirect('http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Events')
+        return redirect('Organizer_Dashboard')
     else:
         messages.error(request, "Something Went Wrong !")
-        return redirect('http://127.0.0.1:8000/events/organizer-dashboard/?type=Total_Events')
+        return redirect('Organizer_Dashboard')
 
