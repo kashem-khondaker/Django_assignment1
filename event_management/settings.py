@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*^en$(a1m5ob3pm!_@j*(wqzhmgs3@8u&ca6hfl8--w4i43$ge'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,25 +74,25 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'Event_management',
-#         'USER': 'postgres',
-#         'PASSWORD': 'password',
-#         'HOST': 'localhost',  
-#         'PORT': '5432',       
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME' , default=''),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),  
+        'PORT': config('DB_PORT'),        
+    }
+}
 
 # Event_management
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
-        conn_max_age=600    
-    )}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
+#         conn_max_age=600    
+#     )}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,3 +134,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Host for sending e-mail.
+EMAIL_HOST = config('EMAIL_HOST')
+
+# Port for sending e-mail.
+EMAIL_PORT = config('EMAIL_PORT')
+
+# Optional SMTP authentication information for EMAIL_HOST.
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # 'mtiw lwfd nmth xuxb'
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+FRONTEND_URL = 'http://127.0.0.1:8000'
