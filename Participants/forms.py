@@ -2,7 +2,7 @@ from django import forms
 from Participants.models import Participant
 from events.forms import StyleFormMixin
 from django.contrib.auth.forms import UserCreationForm ,AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User , Permission , Group
 
 
 
@@ -31,3 +31,22 @@ class RegistrationsForm(UserCreationForm):
         self.fields['username'].help_text = None
         self.fields['password1'].help_text = None
         self.fields['password2'].help_text = None
+
+class CreateGroupForm(StyleFormMixin , forms.ModelForm):
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget = forms.CheckboxSelectMultiple,
+        required = False,
+        label = 'Assign Permission'
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name','permissions']
+
+class AssignedRoleForm(StyleFormMixin , forms.Form):
+    Role = forms.ModelChoiceField(
+        queryset= Group.objects.all(),
+        empty_label="select a role "
+    )
+

@@ -1,0 +1,50 @@
+{% extends "Admin/admin_dashboard.html" %}
+{% block content %}
+
+<h2 class="text-xl font-bold mb-4 text-gray-200 flex justify-between items-center">
+    <span>Group List</span>
+    <form method="GET" action="" class="flex items-center">
+        <input type="text" name="search" placeholder="Search by name or email" 
+               class="px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm font-normal w-64">
+        <button type="submit" class="ml-2 p-2 mr-4 text-white rounded-lg hover:bg-blue-600 focus:outline-none">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</h2>
+
+
+
+<div class="overflow-x-auto">
+    <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+        <thead>
+            <tr class="bg-gray-700 text-gray-100">
+                <th class="p-4 text-left">Number</th>
+                <th class="p-4 text-left">Name</th>
+                <th class="p-4 text-left">Permissions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+                <tr class="border-b border-gray-600 hover:bg-gradient-to-b hover:to-aqua-400 transform hover:scale-105 hover:shadow-xl transition-all duration-500">
+                    <td class="p-4 text-gray-300">{{ forloop.counter }}</td>
+                    
+                    <td class="p-4 text-gray-300">{{ group.name|default:"None" }}</td>
+                    <td class="p-4 text-gray-300">
+                        <ul>
+                            {% for permission in group.permissions.all %}
+                                <li>{{permission.name}} -- {{permission.codename}}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    {% comment %} <td class="p-4">
+                        <a href="{% url 'assigned_role' user.id %}" 
+                           class="inline-block transition whitespace-nowrap px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transform hover:scale-105 transition duration-300">
+                            Change Role
+                        </a>
+                    </td> {% endcomment %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

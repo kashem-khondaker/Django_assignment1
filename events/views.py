@@ -7,11 +7,16 @@ from categories.models import Categories
 from Participants.models import Participant
 from events.models import Event
 from datetime import date,timezone
+from django.contrib.auth.decorators import login_required , user_passes_test
 
-def Event_view(request):
-    return render(request, 'events/events.html')  
+# def Event_view(request):
+#     return render(request, 'events/events.html')  
 
+def is_organizer(user):
+    return user.groups.filter(name__in=[ 'Organizer']).exists()
 
+@login_required
+@user_passes_test(is_organizer, login_url='no_permission')
 def add_events(request):
     add_events_form = EventForm()
     if request.method == "POST":
@@ -27,6 +32,9 @@ def add_events(request):
     context = { 'add_events_form':add_events_form}
     return render(request , 'events/create_event.html' , context)
 
+
+@login_required
+@user_passes_test(is_organizer, login_url='no_permission')
 def update_events(request , id):
     event = Event.objects.get(id=id)
     event_form = EventForm(instance = event)
@@ -45,13 +53,16 @@ def update_events(request , id):
             messages.success(request, "Event Update successfully !")
             return redirect('update_event', id=id )
     
-    context ={
+    context = {
         'event_form':event_form,
         'event_categories_form': event_categories_form
     }
 
     return render(request , 'events/update_events.html' , context)
 
+
+@login_required
+@user_passes_test(is_organizer, login_url='no_permission')
 def delete_events(request , id):
     if request.method == "POST":
         event = Event.objects.get(id=id)
@@ -62,6 +73,9 @@ def delete_events(request , id):
     else:
         messages.error(request, "Something Went Wrong !")
         return redirect('Organizer_Dashboard')
+
+
+
 
 def Home(request):
     type = request.GET.get('type', 'all')
@@ -100,7 +114,8 @@ def Home(request):
     return render(request, 'Dashboard/home.html', context)
 
 
-
+@login_required
+@user_passes_test(is_organizer, login_url='no_permission')
 def Details(request, id):
     
     event = Event.objects.select_related('category').prefetch_related('participants').filter(id=id).first()
@@ -115,9 +130,10 @@ def Details(request, id):
     return render(request, 'Dashboard/details.html', context)
 
 
+@login_required
+@user_passes_test(is_organizer, login_url='log-in')
 def Organizer_Dashboard(request):
     type = request.GET.get('type' , 'all')
-    
     
     base_query = Event.objects.select_related('category').prefetch_related('participants')
     
@@ -161,7 +177,8 @@ def Organizer_Dashboard(request):
     return render(request, 'Dashboard/organizer_dashboard.html' , context)
 
 
-
+@login_required
+@user_passes_test(is_organizer, login_url='no_permission')
 def Search(request):
     query = request.GET.get('q', '')
     events = Event.objects.all()
@@ -173,6 +190,9 @@ def Search(request):
 
     return render(request, 'Dashboard/organizer_dashboard.html', context)
 
+
+@login_required
+@user_passes_test(is_organizer, login_url='no_permission')
 def Filter(request):
     category = request.GET.get('category')
     start_date = request.GET.get('start_date')
@@ -181,7 +201,6 @@ def Filter(request):
     events = Event.objects.all()
     categories = Categories.objects.all()
 
-    
     if category:
         events = events.filter(category_id=category)
 

@@ -1,20 +1,22 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect,HttpResponse
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User , Group
 from django.contrib.auth.forms import UserCreationForm ,AuthenticationForm
 from django.contrib import messages
-from Participants.forms import ParticipantForm
+from Participants.forms import ParticipantForm,AssignedRoleForm , CreateGroupForm
 from Participants.models import Participant
 from Participants.forms import RegistrationsForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required , user_passes_test
 
 
+def is_admin_or_organizer(user):
+    return user.groups.filter(name__in=['Admin', 'Organizer']).exists()
 
 
-def Participants(request):
-    return render(request, 'Participants/participant_list.html')  
 
+@login_required
+@user_passes_test(is_admin_or_organizer, login_url='no_permission')
 def Add_participants(request):
     add_participant = ParticipantForm()
     if request.method == "POST":
@@ -31,6 +33,8 @@ def Add_participants(request):
     return render(request , 'Participants/add_participants.html' , context)
 
 
+@login_required
+@user_passes_test(is_admin_or_organizer, login_url='no_permission')
 def update_Participants(request , id):
     participant = Participant.objects.get(id=id)
     Participant_form = ParticipantForm(instance = participant)
@@ -49,13 +53,16 @@ def update_Participants(request , id):
             messages.success(request, "Participants Update successfully !")
             return redirect('Organizer_Dashboard')
     
-    context ={
+    context = {
         'participant':participant,
         'Participant_form': Participant_form,
     }
 
     return render(request , 'Participants/update_participant.html' , context)
 
+
+@login_required
+@user_passes_test(is_admin_or_organizer, login_url='no_permission')
 def delete_participant(request , id):
     if request.method == "POST":
         participant = Participant.objects.get(id=id)
@@ -75,11 +82,10 @@ def User_Registrations(request):
     if request.method == 'POST' :
         form = RegistrationsForm(request.POST)
         if form.is_valid():
-            # user = form.save()
-            # login(request , user)
             user = form.save(commit = False)
             user.is_active = False
             user.set_password(form.cleaned_data.get('password1'))
+            user.save()
 
             messages.success(request , "User Registration successfully . Please check our email to activate your account ! ")
             return redirect('home') 
@@ -90,6 +96,23 @@ def User_Registrations(request):
     return render(request , 'Registrations/User_Sign_up.html' , {'form':form})
 
 
+def activate_account(request, user_id, token):
+    try:
+        user = User.objects.get(id=user_id)
+        
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+
+            messages.success(request, "Your account has been activated successfully! You can now log in.")
+            return redirect('log-in')
+        else:
+            messages.error(request, "Invalid activation link or token has expired.")
+            return redirect('sign-up')
+
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect('sign-up')
 
 
 def User_Log_in(request):
@@ -102,15 +125,76 @@ def User_Log_in(request):
         if user is not None:
             login(request , user)
             messages.success(request, "Successfully logged in!")
-            return redirect('home')
+
+            # Redirect based on user's group
+            if user.groups.filter(name='Admin').exists():
+                return redirect('Admin_dashboard')  # Redirect to Admin dashboard
+            elif user.groups.filter(name='Organizer').exists():
+                return redirect('Organizer_Dashboard')  # Redirect to Manager dashboard
+            else:
+                return redirect('home')  # Default redirect if no specific group
+
         else:
             messages.error(request, "Invalid username or password!")
 
     return render(request , 'Registrations/User_Log_in.html')
 
 
+
+
 @login_required
 def User_Log_Out(request):
     logout(request)
     messages.success(request, "You have been logged out successfully!")
-    return redirect('log-in')
+    return redirect('home')
+
+
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists()
+
+
+@login_required
+@user_passes_test(is_admin , login_url='no_permission')
+def admin_dashboard(request):
+    users = User.objects.all()
+    return render(request , 'Admin/admin_dashboard.html' , {'users':users})
+
+
+@login_required
+@user_passes_test(is_admin , login_url='no_permission')
+def Create_Group(request ):
+
+    form = CreateGroupForm()
+    if request.method == "POST":
+        form = CreateGroupForm(request.POST)
+        if form.is_valid():
+            group = form.save()
+            messages.success(request , f'Group {group.name} has been created successfully .')
+            return redirect('Create_Group')  
+
+    return render(request , 'Admin/create_group.html' , {'form':form})   
+
+
+@login_required
+@user_passes_test(is_admin , login_url='no_permission')
+def group_list(request):
+    groups = Group.objects.prefetch_related('permissions').all()
+    return render( request , 'Admin/group_list.html', {'groups':groups} )
+
+
+@login_required
+@user_passes_test(is_admin , login_url='no_permission')
+def assigned_role(request, user_id):
+    user = User.objects.get(id=user_id)
+    form = AssignedRoleForm()
+    if request.method == "POST":
+        form = AssignedRoleForm(request.POST)
+        if form.is_valid():
+            role = form.cleaned_data.get('Role')  # Ensure it matches the form field name
+            user.groups.clear()  # Remove old roles
+            user.groups.add(role)
+
+            messages.success(request, f"{user.username} has been assigned to the '{role.name}' role")
+            return redirect('Admin_dashboard')
+    return render(request, 'Admin/assign_role.html', {"form": form, "user": user})
+

@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("hidden");
+        }
+
+        function toggleDropdown(id) {
+            document.getElementById(id).classList.toggle("hidden");
+        }
+    </script>
+</head>
+<body class="bg-[#1c1f29] text-gray-200">
+    <div class="flex min-h-screen">
+        
+        <div id="sidebar" class="bg-gray-900 text-white w-64 p-5 hidden md:block md:relative absolute md:h-auto h-full transition-all duration-300">
+            <h2 class="text-xl font-bold mb-8 text-center text-gray-300 ">Admin Dashboard</h2> 
+            
+
+            <!-- Users Section -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2">
+                    <i class="fas fa-users text-blue-500"></i> Users
+                </h3>
+                <div class="space-y-2 mt-3">                    
+                    <!-- User manage -->
+                    <select class="w-full p-2 bg-gray-900 text-white rounded" onchange="location = this.value;">
+                        <option value="#">Manage User</option>
+                        <option value="{% url 'Admin_dashboard' %}">All Users</option>
+                        <option value="{% url 'sign-up' %}">Create Users</option> 
+                    </select>
+
+                    <!-- Group manage -->
+                    <select class="w-full p-2 bg-gray-900 text-white rounded" onchange="location = this.value;">
+                        <option value="#">Manage Manager </option>
+                        <option value="{% url 'Create_Group' %}">Create Group</option>  <!-- ✅ Corrected -->
+                        <option value="{% url 'group_list' %}">Group List</option>  <!-- ✅ Ensure correct name -->
+                    </select>
+                    
+                    
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2">
+                    <i class="fas fa-calendar-alt text-green-500"></i> Events
+                </h3>
+                <div class="space-y-2 mt-3">
+                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">All Events</a>
+                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Create Event</a>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2">
+                    <i class="fas fa-chart-line text-yellow-500"></i> Analytics
+                </h3>
+                <div class="space-y-2 mt-3">
+                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">User Reports</a>
+                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Event Statistics</a>
+                </div>
+            </div>
+
+            <!-- Revenue Section -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2">
+                    <i class="fas fa-dollar-sign text-yellow-500"></i> Revenue
+                </h3>
+                <div class="space-y-2 mt-3">
+                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Sales Report</a>
+                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Invoices</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Toggle Button (for small devices) -->
+        <button onclick="toggleSidebar()" class="md:hidden fixed top-5 left-5 bg-gray-900 text-white p-3 rounded-lg focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Navbar -->
+            <div class="flex justify-between items-center ring-1 ring-blue-500/50 p-4 shadow-sm rounded-lg">
+                <h1 class="text-lg font-bold text-white">Dashboard Overview</h1>
+                <a href="{% url 'log-out' %}" 
+                class="inline-block transition whitespace-nowrap px-4 py-2  shadow-blue-500/50  text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transform hover:scale-105 transition duration-300"
+                >Log Out</a>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+                <div class="shadow-blue-500/50 ring-1 ring-blue-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                    <i class="fas fa-users text-blue-500 text-3xl"></i>
+                    <div>
+                        <p class="text-gray-400">Total Users</p>
+                        <h3 class="text-xl font-bold text-white">1,234</h3>
+                    </div>
+                </div>
+                <div class="shadow-green-500/50 ring-1 ring-green-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                    <i class="fas fa-calendar-alt text-green-500 text-3xl"></i>
+                    <div>
+                        <p class="text-gray-400">Total Events</p>
+                        <h3 class="text-xl font-bold text-white">56</h3>
+                    </div>
+                </div>
+                <div class="shadow-yellow-500/50 ring-1 ring-yellow-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                    <i class="fas fa-dollar-sign text-yellow-500 text-3xl"></i>
+                    <div>
+                        <p class="text-gray-400">Revenue</p>
+                        <h3 class="text-xl font-bold text-white">$12,345</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="mt-10 p-6 bg-[#1c1f29] border border-spacing-0 border-gray-700 shadow-3xl rounded-lg">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="p-4 mb-4 text-sm rounded-lg 
+                            {% if message.tags == 'success' %}
+                                bg-green-100 text-green-700 border-l-4 border-green-500
+                            {% elif message.tags == 'error' %}
+                                bg-red-100 text-red-700 border-l-4 border-red-500
+                            {% elif message.tags == 'warning' %}
+                                bg-yellow-100 text-yellow-700 border-l-4 border-yellow-500
+                            {% else %}
+                                bg-gray-100 text-gray-700 border-l-4 border-gray-500
+                            {% endif %}">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                {% block content %}
+                    {% include "Admin/user_list.html" %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

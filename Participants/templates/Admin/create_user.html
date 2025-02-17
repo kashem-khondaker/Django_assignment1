@@ -1,0 +1,52 @@
+{% extends "Admin/admin_dashboard.html" %}
+{% block content %}
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
+            <h1 class="text-3xl font-semibold text-center text-white mb-6">Sign Up</h1>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mb-4 p-4 rounded-lg 
+                        {% if message.tags == 'success' %}bg-green-500 text-white{% endif %}
+                        {% if message.tags == 'error' %}bg-red-500 text-white{% endif %}
+                        {% if message.tags == 'warning' %}bg-yellow-500 text-white{% endif %}
+                        {% if message.tags == 'info' %}bg-blue-500 text-white{% endif %}
+                        ">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="{% url 'sign-up' %}" method="POST">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <div>
+                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                        {{ form.username }}
+                    </div>
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div>
+                        <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 mt-6">
+                    Sign Up
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+{% endblock content %}

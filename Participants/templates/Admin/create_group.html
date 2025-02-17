@@ -1,0 +1,19 @@
+{% extends "Admin/admin_dashboard.html" %}
+
+{% block content %}
+    
+    <div class="max-w-[32%] mx-auto bg-gray-200 p-6 rounded">
+        <h2 class="text-2xl font-semibold mb-6 text-center text-black dark:text-gray-200">Create Group </h2>
+    
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div class="mb-4 text-gray-900 dark:text-gray-200">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="w-full bg-green-600 dark:bg-green-700 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700 dark:hover:bg-green-800 transition">
+                Add 
+            </button>
+        </form>
+    </div>
+
+{% endblock content %}
