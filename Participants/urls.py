@@ -1,7 +1,8 @@
 from django.urls import path
-from Participants.views import assigned_role, group_list ,activate_account ,admin_dashboard , Add_participants,update_Participants,delete_participant , User_Registrations , User_Log_in , User_Log_Out,Create_Group
+from Participants.views import participant_dashboard, assigned_role, group_list ,activate_account ,admin_dashboard , Add_participants,update_Participants,delete_participant , User_Registrations , User_Log_in , User_Log_Out,Create_Group
 
 urlpatterns = [
+    path('p-dashboard/' , participant_dashboard , name="participant_dashboard"),
     path('add-participants/' , Add_participants , name="add_participant"),
     path('update/<int:id>/',update_Participants,name='update_Participants'),
     path('delete/<int:id>/',delete_participant,name='delete_participant'),

@@ -8,7 +8,7 @@ from Participants.models import Participant
 from Participants.forms import RegistrationsForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required , user_passes_test
-
+from events.models import Event
 
 def is_admin_or_organizer(user):
     return user.groups.filter(name__in=['Admin', 'Organizer']).exists()
@@ -198,3 +198,8 @@ def assigned_role(request, user_id):
             return redirect('Admin_dashboard')
     return render(request, 'Admin/assign_role.html', {"form": form, "user": user})
 
+
+def participant_dashboard(request):
+    user = request.user
+    events = user.rsvped_events.all()  # Fetch RSVP events for the logged-in participant
+    return render(request, 'Participants/participants_dashboard.html', {'events': events})

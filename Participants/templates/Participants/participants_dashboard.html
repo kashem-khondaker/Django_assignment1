@@ -1,0 +1,13 @@
+
+<h2>My RSVP’d Events</h2>
+<ul>
+    {% for event in events %}
+        <li>
+            <strong>{{ event.title }}</strong> - {{ event.date }} at {{ event.time }}<br>
+            Location: {{ event.location }}<br>
+            <img src="{{ event.image.url }}" alt="{{ event.title }}" width="200">
+        </li>
+    {% empty %}
+        <p>You have not RSVP’d for any events.</p>
+    {% endfor %}
+</ul>

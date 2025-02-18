@@ -4,20 +4,21 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User,Group
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
+from events.models import Event
 
 
-# @receiver(m2m_changed , sender = Task.employee.through)
-# def Notify_employee_on_task_creation(sender , instance , action,**kwargs):        
-#     if action=="post_add":
-#         assigned_emails = [emp.email for emp in instance.employee.all()]
-#         print(assigned_emails)
-#         send_mail(
-#             "Checkout your new task ",
-#             f"You have been assigned to this task : {instance.title}",
-#             "kashem.khondaker.official001@gmail.com",
-#             assigned_emails,
-#             fail_silently=False,   # for show error when main not send !
-#         )
+@receiver(m2m_changed, sender=Event.rsvped_users.through)
+def send_rsvp_confirmation(sender, instance, action, pk_set, **kwargs):
+    if action == "post_add":
+        for user_id in pk_set:
+            user = instance.rsvped_users.get(id=user_id)
+            send_mail(
+                "RSVP Confirmation",
+                f"Hello {user.first_name},\n\nYou have successfully RSVP’d for {instance.title} on {instance.date} at {instance.time}.",
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,
+            )
 
 
 

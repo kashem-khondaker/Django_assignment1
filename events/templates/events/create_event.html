@@ -24,7 +24,7 @@
 
         <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Add New Event</h2>
         
-        <form method="POST" class="space-y-4">
+        <form method="POST" class="space-y-4" enctype = 'multipart/form-data'>
             {% csrf_token %}
             <div class="space-y-2">
                 {{ add_events_form.as_p }}

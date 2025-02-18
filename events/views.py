@@ -1,4 +1,4 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect,get_object_or_404
 from django.contrib import messages
 from django.db.models import Q , Count
 from events.forms import EventForm
@@ -9,8 +9,8 @@ from events.models import Event
 from datetime import date,timezone
 from django.contrib.auth.decorators import login_required , user_passes_test
 
-# def Event_view(request):
-#     return render(request, 'events/events.html')  
+def Event_view(request):
+    return render(request, 'events/events.html')  
 
 def is_organizer(user):
     return user.groups.filter(name__in=[ 'Organizer']).exists()
@@ -20,7 +20,7 @@ def is_organizer(user):
 def add_events(request):
     add_events_form = EventForm()
     if request.method == "POST":
-        add_events_form = EventForm(request.POST)
+        add_events_form = EventForm(request.POST , request.FILES)
         if add_events_form.is_valid():
             add_events_form.save()
 
@@ -114,8 +114,6 @@ def Home(request):
     return render(request, 'Dashboard/home.html', context)
 
 
-@login_required
-@user_passes_test(is_organizer, login_url='no_permission')
 def Details(request, id):
     
     event = Event.objects.select_related('category').prefetch_related('participants').filter(id=id).first()
@@ -208,3 +206,15 @@ def Filter(request):
         events = events.filter(date__range=[start_date, end_date])
 
     return render(request, 'Dashboard/organizer_dashboard.html', {'events': events, "categories": categories})
+
+
+def rsvp_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+
+    if request.user in event.rsvped_users.all():
+        messages.warning(request, "You have already RSVP’d for this event.")
+    else:
+        event.rsvped_users.add(request.user)
+        messages.success(request, "Successfully RSVP’d!")
+    
+    return redirect('participant_dashboard')

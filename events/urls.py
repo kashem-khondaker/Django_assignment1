@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from events.views import Filter,Home,  add_events,Search,Organizer_Dashboard , update_events , delete_events , Details
+from events.views import Filter,Home,rsvp_event,  add_events,Search,Organizer_Dashboard , update_events , delete_events , Details
 
 urlpatterns = [
     path('create-event' , add_events , name="add_event"),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('search/',Search,name="Search"),
     path('filter/',Filter , name="filter"),
     path('details/<int:id>/',Details,name='Details'),
+    path('rsvp/<int:event_id>/', rsvp_event, name='rsvp_event'),
 ]
