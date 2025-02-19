@@ -17,7 +17,7 @@ def is_organizer(user):
 def is_organizer_or_admin(user):
     return user.groups.filter(name__in=[ 'Organizer' , 'Admin' ]).exists()
 
-@login_required
+
 @user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def add_events(request):
     add_events_form = EventForm()
@@ -35,7 +35,6 @@ def add_events(request):
     return render(request , 'events/create_event.html' , context)
 
 
-@login_required
 @user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def update_events(request , id):
     event = Event.objects.get(id=id)
@@ -63,7 +62,6 @@ def update_events(request , id):
     return render(request , 'events/update_events.html' , context)
 
 
-@login_required
 @user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def delete_events(request , id):
     if request.method == "POST":

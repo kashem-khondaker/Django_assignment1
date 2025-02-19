@@ -16,9 +16,9 @@ from datetime import date,timezone
 def is_admin_or_organizer(user):
     return user.groups.filter(name__in=['Admin', 'Organizer']).exists()
 
+def no_permission(request):
+    return render(request , 'Admin/no_permission.html')
 
-
-@login_required
 @user_passes_test(is_admin_or_organizer, login_url='no_permission')
 def Add_participants(request):
     add_participant = ParticipantForm()
@@ -36,7 +36,6 @@ def Add_participants(request):
     return render(request , 'Participants/add_participants.html' , context)
 
 
-@login_required
 @user_passes_test(is_admin_or_organizer, login_url='no_permission')
 def update_Participants(request , id):
     participant = Participant.objects.get(id=id)
@@ -64,7 +63,7 @@ def update_Participants(request , id):
     return render(request , 'Participants/update_participant.html' , context)
 
 
-@login_required
+
 @user_passes_test(is_admin_or_organizer, login_url='no_permission')
 def delete_participant(request , id):
     if request.method == "POST":
@@ -313,7 +312,6 @@ def User_history(request):
     return render(request, 'Admin/user_history.html', context)
 
 
-@login_required
 @user_passes_test(is_admin , login_url='no_permission')
 def Create_Group(request ):
 
@@ -328,14 +326,14 @@ def Create_Group(request ):
     return render(request , 'Admin/create_group.html' , {'form':form})   
 
 
-@login_required
+
 @user_passes_test(is_admin , login_url='no_permission')
 def group_list(request):
     groups = Group.objects.prefetch_related('permissions').all()
     return render( request , 'Admin/group_list.html', {'groups':groups} )
 
 
-@login_required
+
 @user_passes_test(is_admin , login_url='no_permission')
 def assigned_role(request, user_id):
     user = User.objects.get(id=user_id)
