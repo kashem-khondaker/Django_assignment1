@@ -1,5 +1,5 @@
 from django.urls import path
-from Participants.views import participant_dashboard, assigned_role, group_list ,activate_account ,admin_dashboard , Add_participants,update_Participants,delete_participant , User_Registrations , User_Log_in , User_Log_Out,Create_Group
+from Participants.views import participant_dashboard, assigned_role, group_list ,activate_account ,admin_dashboard , Add_participants,update_Participants,delete_participant , User_Registrations , User_Log_in , User_Log_Out,Create_Group,all_event
 
 urlpatterns = [
     path('p-dashboard/' , participant_dashboard , name="participant_dashboard"),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('admin/create-group/' , Create_Group , name="Create_Group"),
     path('admin/group-list/' , group_list , name="group_list"),
     path('admin/assigned-role/<int:user_id>' , assigned_role , name="assigned_role"),
+    path('admin/event/all/',all_event , name="all_event"),
 ]

@@ -19,7 +19,7 @@
       <div class="container mx-auto flex justify-between items-center">
           <a href="{% url 'home' %}?type=Total_Events"  class="text-white text-lg font-bold">Event Management</a>
           <div class="hidden md:flex items-center space-x-4">
-              <a href="{% url 'home' %}?type=Total_Events" class="text-gray-300 hover:text-white">Home</a>
+              <a href="{% url 'home' %}?type=Total_Events" class="text-gray-300 hover:text-white"></i> Home</a>
               <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events"  class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="{% url 'log-in' %}" class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</a>
           </div>
@@ -39,7 +39,7 @@
           <a href="{% url 'log-in' %}" class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</a>
       </div>
   </nav>
-  
+
   <script>
       const menuToggle = document.getElementById('menu-toggle');
       const mobileMenu = document.getElementById('mobile-menu');
@@ -48,6 +48,5 @@
       });
   </script>
     {% block content %}{% endblock content %}
-    
 </body>
 </html>

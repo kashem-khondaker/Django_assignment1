@@ -9,6 +9,9 @@ from Participants.forms import RegistrationsForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required , user_passes_test
 from events.models import Event
+from django.db.models import Q , Count
+from categories.models import Categories
+from datetime import date,timezone
 
 def is_admin_or_organizer(user):
     return user.groups.filter(name__in=['Admin', 'Organizer']).exists()
@@ -127,12 +130,14 @@ def User_Log_in(request):
             messages.success(request, "Successfully logged in!")
 
             # Redirect based on user's group
+            if user.groups.filter(name='User').exists():
+                return redirect('participant_dashboard')  # Redirect to Admin dashboard
             if user.groups.filter(name='Admin').exists():
                 return redirect('Admin_dashboard')  # Redirect to Admin dashboard
             elif user.groups.filter(name='Organizer').exists():
                 return redirect('Organizer_Dashboard')  # Redirect to Manager dashboard
             else:
-                return redirect('home')  # Default redirect if no specific group
+                return redirect('home') 
 
         else:
             messages.error(request, "Invalid username or password!")
@@ -156,8 +161,104 @@ def is_admin(user):
 @login_required
 @user_passes_test(is_admin , login_url='no_permission')
 def admin_dashboard(request):
+    type = request.GET.get('type' , 'all')
+    
+    base_query = Event.objects.select_related('category').prefetch_related('participants')
+    
+    participants = Participant.objects.distinct()
+    categories = Categories.objects.all()
+    total_participants = Participant.objects.aggregate(total=Count('id', distinct=True))
+    total_participants_each_category = base_query.annotate(total_participants=Count('participants'))
+    
+    today_events = base_query.filter(date = date.today())
+    today_events_participants = today_events.annotate(total_participants=Count('participants')).values('id', 'title', 'total_participants')
+    
+    events = base_query.none()
+
+    if type == "Total_Participants":
+        events = None
+    elif type == "Total_Events":
+        events = base_query.all()
+    elif type == "Upcoming_Events":
+        events = base_query.filter(date__gt = date.today())
+    elif type == "Past_Events":
+        events = base_query.filter(date__lt = date.today())
+    elif type == "Today_Events":
+        events = base_query.filter(date=date.today())
+
+    counts = Event.objects.aggregate(
+        total=Count('id'),
+        upcoming=Count('id', filter=Q(date__gt=date.today())),
+        past_event=Count('id', filter=Q(date__lt=date.today())),
+        Today_Events=Count('id', filter=Q(date=date.today()))
+    )
     users = User.objects.all()
-    return render(request , 'Admin/admin_dashboard.html' , {'users':users})
+    total_users = User.objects.count()
+    context = {
+        'events':events,
+        'users':users,
+        'total_users':total_users,
+        'today_events':today_events,
+        'today_events_participants':today_events_participants,
+        'counts':counts,
+        'participants':participants,
+        'total_participants':total_participants,
+        'total_participants_each_category':total_participants_each_category,
+        'categories':categories,
+    }
+    return render(request , 'Admin/admin_dashboard.html' , context)
+
+
+def all_event(request):
+    type = request.GET.get('type', 'all') 
+    
+    base_query = Event.objects.select_related('category').prefetch_related('participants')
+    
+    participants = Participant.objects.distinct()
+    categories = Categories.objects.all()
+    total_participants = Participant.objects.aggregate(total=Count('id', distinct=True))
+    total_participants_each_category = base_query.annotate(total_participants=Count('participants'))
+    
+    today_events = base_query.filter(date=date.today())
+    today_events_participants = today_events.annotate(total_participants=Count('participants')).values('id', 'title', 'total_participants')
+
+    # Ensure events always has a valid queryset
+    events = base_query.all()  # Default: Show all events
+
+    if type == "Total_Events":
+        events = base_query.all()
+    elif type == "Upcoming_Events":
+        events = base_query.filter(date__gt=date.today())
+    elif type == "Past_Events":
+        events = base_query.filter(date__lt=date.today())
+    elif type == "Today_Events":
+        events = base_query.filter(date=date.today())
+
+    # Count statistics
+    counts = Event.objects.aggregate(
+        total=Count('id'),
+        upcoming=Count('id', filter=Q(date__gt=date.today())),
+        past_event=Count('id', filter=Q(date__lt=date.today())),
+        Today_Events=Count('id', filter=Q(date=date.today()))
+    )
+
+    users = User.objects.all()
+    total_users = User.objects.count()
+
+    context = {
+        'events': events,  # Ensure events is always a queryset
+        'users': users,
+        'total_users': total_users,
+        'today_events': today_events,
+        'today_events_participants': today_events_participants,
+        'counts': counts,
+        'participants': participants,
+        'total_participants': total_participants,
+        'total_participants_each_category': total_participants_each_category,
+        'categories': categories,
+    }
+    
+    return render(request, 'Admin/all_events.html', context)
 
 
 @login_required
@@ -199,7 +300,8 @@ def assigned_role(request, user_id):
     return render(request, 'Admin/assign_role.html', {"form": form, "user": user})
 
 
+@login_required
 def participant_dashboard(request):
     user = request.user
-    events = user.rsvped_events.all()  # Fetch RSVP events for the logged-in participant
+    events = user.rsvped_events.all() 
     return render(request, 'Participants/participants_dashboard.html', {'events': events})

@@ -25,7 +25,7 @@
         </thead>
         <tbody>
             {% for group in groups %}
-                <tr class="border-b border-gray-600 hover:bg-gradient-to-b hover:to-aqua-400 transform hover:scale-105 hover:shadow-xl transition-all duration-500">
+                <tr class="border-b border-gray-600 hover:bg-gradient-to-b hover:to-aqua-400 transform hover:scale-104 hover:shadow-xl transition-all duration-500">
                     <td class="p-4 text-gray-300">{{ forloop.counter }}</td>
                     
                     <td class="p-4 text-gray-300">{{ group.name|default:"None" }}</td>
@@ -36,12 +36,7 @@
                             {% endfor %}
                         </ul>
                     </td>
-                    {% comment %} <td class="p-4">
-                        <a href="{% url 'assigned_role' user.id %}" 
-                           class="inline-block transition whitespace-nowrap px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transform hover:scale-105 transition duration-300">
-                            Change Role
-                        </a>
-                    </td> {% endcomment %}
+                    
                 </tr>
             {% endfor %}
         </tbody>

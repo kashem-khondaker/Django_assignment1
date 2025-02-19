@@ -1,27 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>This is Sign up page !</h1>
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+{% extends "Dashboard/index.html" %}
 
-    <div>
-        <form action="{% url 'sign-up' %}" method="POST">
+{% block title %}Sign UP {% endblock %}
+{% block content %}
+<section class="bg-gray-900 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h2 class="text-white text-2xl font-bold text-center mb-6">Sign Up</h2>
+        {% comment %} {% if messages %}
+            {% for message in messages %}
+                <div class="p-3 mb-4 text-sm rounded-lg 
+                    {% if message.tags == 'success' %}bg-green-500 text-white
+                    {% elif message.tags == 'error' %}bg-red-500 text-white
+                    {% elif message.tags == 'warning' %}bg-yellow-500 text-gray-900
+                    {% else %}bg-gray-700 text-white{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %} {% endcomment %}
+        
+        <form action="{% url 'sign-up' %}" method="POST" class="space-y-4">
             {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit">Sign up</button>
+            
+            <div class="space-y-2">
+                {{ form.as_p|safe }}
+            </div>
+            
+            <button type="submit" 
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition duration-300">
+                Sign Up
+            </button>
         </form>
 
+        <div class="mt-4 text-center">
+            <a href="{% url 'log-in' %}" class="text-blue-400 hover:underline">Already have an account? Log in</a>
+        </div>
+
+        <div class="mt-2 text-center">
+            <a href="javascript:history.back()" class="text-gray-400 hover:underline">← Go Back</a>
+        </div>
     </div>
-</body>
-</html>
+</section>
+{% endblock %}

@@ -13,10 +13,12 @@ def Event_view(request):
     return render(request, 'events/events.html')  
 
 def is_organizer(user):
-    return user.groups.filter(name__in=[ 'Organizer']).exists()
+    return user.groups.filter(name__in=[ 'Organizer' ]).exists()
+def is_organizer_or_admin(user):
+    return user.groups.filter(name__in=[ 'Organizer' , 'Admin' ]).exists()
 
 @login_required
-@user_passes_test(is_organizer, login_url='no_permission')
+@user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def add_events(request):
     add_events_form = EventForm()
     if request.method == "POST":
@@ -34,7 +36,7 @@ def add_events(request):
 
 
 @login_required
-@user_passes_test(is_organizer, login_url='no_permission')
+@user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def update_events(request , id):
     event = Event.objects.get(id=id)
     event_form = EventForm(instance = event)
@@ -62,7 +64,7 @@ def update_events(request , id):
 
 
 @login_required
-@user_passes_test(is_organizer, login_url='no_permission')
+@user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def delete_events(request , id):
     if request.method == "POST":
         event = Event.objects.get(id=id)
@@ -176,7 +178,7 @@ def Organizer_Dashboard(request):
 
 
 @login_required
-@user_passes_test(is_organizer, login_url='no_permission')
+@user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def Search(request):
     query = request.GET.get('q', '')
     events = Event.objects.all()
@@ -190,7 +192,7 @@ def Search(request):
 
 
 @login_required
-@user_passes_test(is_organizer, login_url='no_permission')
+@user_passes_test(is_organizer_or_admin, login_url='no_permission')
 def Filter(request):
     category = request.GET.get('category')
     start_date = request.GET.get('start_date')
@@ -207,7 +209,7 @@ def Filter(request):
 
     return render(request, 'Dashboard/organizer_dashboard.html', {'events': events, "categories": categories})
 
-
+@login_required
 def rsvp_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
 

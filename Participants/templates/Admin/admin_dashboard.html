@@ -20,6 +20,7 @@
 <body class="bg-[#1c1f29] text-gray-200">
     <div class="flex min-h-screen">
         
+        <!--side bars--> 
         <div id="sidebar" class="bg-gray-900 text-white w-64 p-5 hidden md:block md:relative absolute md:h-auto h-full transition-all duration-300">
             <h2 class="text-xl font-bold mb-8 text-center text-gray-300 ">Admin Dashboard</h2> 
             
@@ -40,8 +41,8 @@
                     <!-- Group manage -->
                     <select class="w-full p-2 bg-gray-900 text-white rounded" onchange="location = this.value;">
                         <option value="#">Manage Manager </option>
-                        <option value="{% url 'Create_Group' %}">Create Group</option>  <!-- ✅ Corrected -->
-                        <option value="{% url 'group_list' %}">Group List</option>  <!-- ✅ Ensure correct name -->
+                        <option value="{% url 'Create_Group' %}">Create Group</option>  
+                        <option value="{% url 'group_list' %}">Group List</option>  
                     </select>
                     
                     
@@ -53,10 +54,12 @@
                 <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2">
                     <i class="fas fa-calendar-alt text-green-500"></i> Events
                 </h3>
-                <div class="space-y-2 mt-3">
-                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">All Events</a>
-                    <a href="#" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Create Event</a>
-                </div>
+                <select class="w-full p-2 bg-gray-900 text-white rounded" onchange="location = this.value;">
+                    <option value="#">Manage Events </option>
+                    <option value="{% url 'all_event' %}">All Events</option>  
+                    <option value="{% url "add_event" %}">Create Event</option>
+                    <option value="#">User List </option>
+                </select>
             </div>
 
             <!-- Analytics Section -->
@@ -92,39 +95,17 @@
             <!-- Navbar -->
             <div class="flex justify-between items-center ring-1 ring-blue-500/50 p-4 shadow-sm rounded-lg">
                 <h1 class="text-lg font-bold text-white">Dashboard Overview</h1>
-                <a href="{% url 'log-out' %}" 
+                <div>
+                    <a href="{% url 'home' %}" 
                 class="inline-block transition whitespace-nowrap px-4 py-2  shadow-blue-500/50  text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transform hover:scale-105 transition duration-300"
+                >Home</a>
+                    <a href="{% url 'log-out' %}" 
+                class="inline-block transition whitespace-nowrap px-4 py-2  shadow-red-500/50  text-white rounded-lg shadow-md hover:bg-red-600 hover:shadow-lg transform hover:scale-105 transition duration-300"
                 >Log Out</a>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-                <div class="shadow-blue-500/50 ring-1 ring-blue-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
-                    <i class="fas fa-users text-blue-500 text-3xl"></i>
-                    <div>
-                        <p class="text-gray-400">Total Users</p>
-                        <h3 class="text-xl font-bold text-white">1,234</h3>
-                    </div>
-                </div>
-                <div class="shadow-green-500/50 ring-1 ring-green-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
-                    <i class="fas fa-calendar-alt text-green-500 text-3xl"></i>
-                    <div>
-                        <p class="text-gray-400">Total Events</p>
-                        <h3 class="text-xl font-bold text-white">56</h3>
-                    </div>
-                </div>
-                <div class="shadow-yellow-500/50 ring-1 ring-yellow-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
-                    <i class="fas fa-dollar-sign text-yellow-500 text-3xl"></i>
-                    <div>
-                        <p class="text-gray-400">Revenue</p>
-                        <h3 class="text-xl font-bold text-white">$12,345</h3>
-                    </div>
                 </div>
             </div>
 
-            <!-- Recent Activities -->
-            <div class="mt-10 p-6 bg-[#1c1f29] border border-spacing-0 border-gray-700 shadow-3xl rounded-lg">
-                {% if messages %}
+            {% if messages %}
                     {% for message in messages %}
                         <div class="p-4 mb-4 text-sm rounded-lg 
                             {% if message.tags == 'success' %}
@@ -140,10 +121,40 @@
                         </div>
                     {% endfor %}
                 {% endif %}
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+                <div class="shadow-blue-500/50 ring-1 ring-blue-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                    <i class="fas fa-users text-blue-500 text-3xl"></i>
+                    <div>
+                        <p class="text-gray-400">Total Users</p>
+                        <h3 class="text-xl font-bold text-white">1,234</h3>
+                    </div>
+                </div>
+                <div class="shadow-green-500/50 ring-1 ring-green-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                    <i class="fas fa-calendar-alt text-green-500 text-3xl"></i>
+                    <div>
+                        <p class="text-gray-400">Total Events</p>
+                        <h3 class="text-xl font-bold text-white">{{counts.total|default:"0" }}</h3>
+                    </div>
+                </div>
+                <div class="shadow-yellow-500/50 ring-1 ring-yellow-500/50 p-6 shadow-lg rounded-lg flex items-center gap-4 transform hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                    <i class="fas fa-dollar-sign text-yellow-500 text-3xl"></i>
+                    <div>
+                        <p class="text-gray-400">Revenue</p>
+                        <h3 class="text-xl font-bold text-white">$12,345</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="mt-10 p-6 bg-[#1c1f29] border border-spacing-0 border-gray-700 shadow-3xl rounded-lg">
+                
                 
                 {% block content %}
                     {% include "Admin/user_list.html" %}
                 {% endblock content %}
+
             </div>
         </div>
     </div>

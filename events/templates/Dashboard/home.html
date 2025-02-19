@@ -2,7 +2,6 @@
 
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-
     <section class="relative w-full h-screen flex items-center justify-center bg-gray-900">
         <div class="absolute inset-0">
             <img src="https://i.ibb.co.com/gbYQ1G3b/toast-new-year-party.jpg" class="w-full h-full object-cover opacity-70">
@@ -64,14 +63,12 @@
 
         <div class="p-4">
 
-            
-            <!--cart section-->
             <!-- Cart Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for event in events %}
-                <a href="{% url 'Details' event.id %}">
+                <div href="{% url 'Details' event.id %}">
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
-                        <img class="w-full h-48 object-cover border-b" src="{{ event.image.event_images.url }}" alt="Event Image">
+                        <img class="w-full h-48 object-cover border-b" src="{{ event.image.url }}" alt="Event Image">
                         <div class="p-4 flex flex-col flex-grow">
                             <h2 class="text-xl text-black">{{ event.title|slice:":15" }}</h2>
                             <p class="text-gray-600 pt-2">{{ event.description|slice:":35" }}</p>
@@ -82,19 +79,23 @@
 
                             <!-- RSVP Button Fix -->
                             {% if user.is_authenticated %}
-                                <div class="mt-auto">
+                                <div >
                                     {% if user in event.rsvped_users.all %}
-                                        <p class="px-6 py-2 text bg-gray-600 hover:bg-blue-700 text-white rounded-lg shadow-lg my-2 text-center">You have RSVP’d</p>
+                                        
+                                        <button class="px-4 py-2 bg-gray-500 text-white text-center rounded-lg" disabled>
+                                            RSVP Done
+                                        </button>
                                     {% else %}
-                                        <a href="{% url 'rsvp_event' event.id %}" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg block text-center my-2">RSVP</a>
+                                        <a href="{% url 'rsvp_event' event.id %}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-center rounded-lg block" >RSVP</a>
                                     {% endif %}
                                 </div>
                             {% endif %}
                         </div>
                     </div>
-                </a>
+                </div>
                 {% endfor %}
-            </div>
+            </div> 
+
 
         </div>
     </main>

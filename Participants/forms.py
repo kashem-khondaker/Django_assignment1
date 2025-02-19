@@ -1,52 +1,61 @@
 from django import forms
 from Participants.models import Participant
 from events.forms import StyleFormMixin
-from django.contrib.auth.forms import UserCreationForm ,AuthenticationForm
-from django.contrib.auth.models import User , Permission , Group
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User, Permission, Group
 
 
-
-class ParticipantForm(StyleFormMixin,forms.ModelForm):  
+class ParticipantForm(StyleFormMixin, forms.ModelForm):  
     class Meta:
         model = Participant  
         fields = ['name', 'email', 'events']  
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Enter name', 'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Enter email', 'class': 'form-control'}),
-            'events': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}), 
+            'name': forms.TextInput(attrs={'placeholder': 'Enter name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter email'}),
+            'events': forms.CheckboxSelectMultiple(), 
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.apply_style_widgets()
 
-class RegistrationsForm(UserCreationForm):
+
+class RegistrationsForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
-        fields = ['username' ,'first_name' , 'last_name' , 'email', 'password1' , 'password2']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
     def __init__(self, *args, **kwargs):
-        super(UserCreationForm , self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  
+        self.apply_style_widgets()  
 
-        self.fields['username'].help_text = None
-        self.fields['password1'].help_text = None
-        self.fields['password2'].help_text = None
+        for field_name in ['username', 'password1', 'password2']:
+            self.fields[field_name].help_text = None
 
-class CreateGroupForm(StyleFormMixin , forms.ModelForm):
+
+class CreateGroupForm(StyleFormMixin, forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(
         queryset=Permission.objects.all(),
-        widget = forms.CheckboxSelectMultiple,
-        required = False,
-        label = 'Assign Permission'
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Assign Permission'
     )
 
     class Meta:
         model = Group
-        fields = ['name','permissions']
+        fields = ['name', 'permissions']
 
-class AssignedRoleForm(StyleFormMixin , forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_style_widgets() 
+
+
+class AssignedRoleForm(StyleFormMixin, forms.Form):
     Role = forms.ModelChoiceField(
-        queryset= Group.objects.all(),
-        empty_label="select a role "
+        queryset=Group.objects.all(),
+        empty_label="Select a role"
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_style_widgets()  
