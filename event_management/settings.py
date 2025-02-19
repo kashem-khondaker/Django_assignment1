@@ -74,25 +74,25 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME' , default=''),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),  
-        'PORT': config('DB_PORT'),        
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME' , default=''),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST'),  
+#         'PORT': config('DB_PORT'),        
+#     }
+# }
 
 # Event_management
 # Database documentation https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
-#         conn_max_age=600    
-#     )}
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
+        conn_max_age=600    
+    )}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -146,7 +146,7 @@ EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # 'mtiw lwfd nmth xuxb'
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-FRONTEND_URL = 'http://127.0.0.1:8000'
+FRONTEND_URL = 'https://event-management-4g6w.onrender.com/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
