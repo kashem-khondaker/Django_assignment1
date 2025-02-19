@@ -261,6 +261,58 @@ def all_event(request):
     return render(request, 'Admin/all_events.html', context)
 
 
+def User_history(request):
+    type = request.GET.get('type', 'all') 
+    
+    base_query = Event.objects.select_related('category').prefetch_related('participants')
+    
+    participants = Participant.objects.distinct()
+    categories = Categories.objects.all()
+    total_participants = Participant.objects.aggregate(total=Count('id', distinct=True))
+    total_participants_each_category = base_query.annotate(total_participants=Count('participants'))
+    
+    today_events = base_query.filter(date=date.today())
+    today_events_participants = today_events.annotate(total_participants=Count('participants')).values('id', 'title', 'total_participants')
+
+    # Ensure events always has a valid queryset
+    events = base_query.all()  # Default: Show all events
+
+    if type == "Total_Events":
+        events = base_query.all()
+    elif type == "Upcoming_Events":
+        events = base_query.filter(date__gt=date.today())
+    elif type == "Past_Events":
+        events = base_query.filter(date__lt=date.today())
+    elif type == "Today_Events":
+        events = base_query.filter(date=date.today())
+
+    # Count statistics
+    counts = Event.objects.aggregate(
+        total=Count('id'),
+        upcoming=Count('id', filter=Q(date__gt=date.today())),
+        past_event=Count('id', filter=Q(date__lt=date.today())),
+        Today_Events=Count('id', filter=Q(date=date.today()))
+    )
+
+    users = User.objects.all()
+    total_users = User.objects.count()
+
+    context = {
+        'events': events,  # Ensure events is always a queryset
+        'users': users,
+        'total_users': total_users,
+        'today_events': today_events,
+        'today_events_participants': today_events_participants,
+        'counts': counts,
+        'participants': participants,
+        'total_participants': total_participants,
+        'total_participants_each_category': total_participants_each_category,
+        'categories': categories,
+    }
+    
+    return render(request, 'Admin/user_history.html', context)
+
+
 @login_required
 @user_passes_test(is_admin , login_url='no_permission')
 def Create_Group(request ):

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User,Group
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from events.models import Event
+from .models import Participant
 
 
 @receiver(m2m_changed, sender=Event.rsvped_users.through)
@@ -17,6 +18,20 @@ def send_rsvp_confirmation(sender, instance, action, pk_set, **kwargs):
                 f"Hello {user.first_name},\n\nYou have successfully RSVP’d for {instance.title} on {instance.date} at {instance.time}.",
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
+                fail_silently=False,
+            )
+
+
+
+@receiver(m2m_changed, sender=Participant.events.through)
+def send_rsvp_email(sender, instance, action, **kwargs):
+    if action == "post_add":  
+        for event in instance.events.all():
+            send_mail(
+                "RSVP Confirmation",
+                f"Hello {instance.name},\n\nYou have successfully RSVP’d for {event.title} on {event.date} at {event.time}.",
+                settings.DEFAULT_FROM_EMAIL,
+                [instance.email],
                 fail_silently=False,
             )
 

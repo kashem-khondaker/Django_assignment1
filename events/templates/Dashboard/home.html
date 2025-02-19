@@ -66,7 +66,7 @@
             <!-- Cart Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {% for event in events %}
-                <div href="{% url 'Details' event.id %}">
+                <div >
                     <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
                         <img class="w-full h-48 object-cover border-b" src="{{ event.image.url }}" alt="Event Image">
                         <div class="p-4 flex flex-col flex-grow">
@@ -77,6 +77,8 @@
                             <p class="text-gray-600">Category: {{ event.category.name }} </p>
                             <p class="text-gray-600">Total Participants: {{ event.total_participants }}</p>
 
+                            <div class="flex items-center gap-2 mt-2">
+                                <a href="{% url 'Details' event.id %}" class="bg-blue-600 hover:bg-bule-700 px-4 py-2 rounded-lg text-white">Details</a>
                             <!-- RSVP Button Fix -->
                             {% if user.is_authenticated %}
                                 <div >
@@ -90,13 +92,12 @@
                                     {% endif %}
                                 </div>
                             {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div> 
-
-
         </div>
     </main>
 {% endblock %}

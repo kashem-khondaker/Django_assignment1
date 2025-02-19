@@ -36,6 +36,7 @@
                         <option value="#">Manage User</option>
                         <option value="{% url 'Admin_dashboard' %}">All Users</option>
                         <option value="{% url 'sign-up' %}">Create Users</option> 
+                        <option value="{% url 'user_history' %}">Users history</option> 
                     </select>
 
                     <!-- Group manage -->
@@ -93,9 +94,9 @@
         <!-- Main Content -->
         <div class="flex-1 p-8">
             <!-- Navbar -->
-            <div class="flex justify-between items-center ring-1 ring-blue-500/50 p-4 shadow-sm rounded-lg">
+            <div class="flex justify-between items-center ring-1 ring-blue-500/50 p-4 shadow-sm rounded-lg px-10">
                 <h1 class="text-lg font-bold text-white">Dashboard Overview</h1>
-                <div>
+                <div class="flex items-center justify-center gap-6">
                     <a href="{% url 'home' %}" 
                 class="inline-block transition whitespace-nowrap px-4 py-2  shadow-blue-500/50  text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transform hover:scale-105 transition duration-300"
                 >Home</a>

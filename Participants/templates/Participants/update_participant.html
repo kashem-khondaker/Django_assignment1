@@ -6,64 +6,39 @@
     <title>Add Event</title>
     <script src="https://cdn.tailwindcss.com"></script> 
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-[#1c1f29] text-gray-200 flex items-center justify-center min-h-screen">
 
     {% block content %}
 
-    <div class="w-full max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <div class="w-full max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
         
         {% if messages %}
             <div class="mb-4">
                 {% for message in messages %}
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 rounded">
+                <div class="bg-green-700 border-l-4 border-green-500 text-green-200 p-3 rounded">
                     <p class="font-semibold">{{ message }}</p>
                 </div>
                 {% endfor %}
             </div>
         {% endif %}
 
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Update Participant Form</h2>
+        <h2 class="text-2xl font-semibold text-gray-100 mb-4 text-center">Update Participant Form</h2>
         
-        <form method="POST" class="space-y-4">
+        <form method="POST" class="space-y-4" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="space-y-2">
                 {{ Participant_form.as_p }} 
             </div>
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
                 Update Participant
             </button>
         </form>
+        <a href="javascript:history.back()" 
+        class="block text-center mt-4 text-blue-400 hover:text-blue-500 underline">
+            ← Go Back
+        </a>
     </div>
 
     {% endblock %} 
 </body>
 </html>
-{% comment %} 
-{% extends "Participants/participant_list.html" %}
-
-{% block title %}Update Participant{% endblock %}
-{% block participation %}
-    <section>
-        {% block content %}
-    <div>
-        {% if messages %}
-            {% for message in messages %}
-            <p class="text-green-500 font-bold mb-4">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    </div>
-
-    <div class="container mt-4">
-        <h2>Update Participant</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                {{ Participant_form.as_p }}  
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-    {% endblock %}
-    </section>
-
-{% endblock %} {% endcomment %}
