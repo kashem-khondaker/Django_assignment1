@@ -88,10 +88,10 @@ def delete_participant(request , id):
         participant.delete()
 
         messages.success(request , "Participant Deleted successfully !")
-        return redirect('Organizer_Dashboard')  
+        return redirect('dashboard')  
     else:
         messages.error(request, "Something Went Wrong !")
-        return redirect('Organizer_Dashboard')
+        return redirect('dashboard')
     
 
 
@@ -257,7 +257,6 @@ class User_Log_in(View):
 # @login_required
 # def User_Log_Out(request):
 #     logout(request)
-#     messages.success(request, "You have been logged out successfully!")
 #     return redirect('home')
 
 
@@ -543,12 +542,15 @@ def assigned_role(request, user_id):
             return redirect('Admin_dashboard')
     return render(request, 'Admin/assign_role.html', {"form": form, "user": user})
 
+"""
 
 @login_required
 def participant_dashboard(request):
     user = request.user
     events = user.rsvped_events.all() 
     return render(request, 'Participants/participants_dashboard.html', {'events': events})
+
+"""
 
 
 class participant_dashboard(LoginRequiredMixin, ListView):
