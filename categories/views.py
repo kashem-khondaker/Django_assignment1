@@ -2,6 +2,10 @@ from django.shortcuts import render , redirect
 from django.contrib import messages
 from categories.forms import CategoriesForm
 from categories.models import Categories
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 # Create your views here.
 

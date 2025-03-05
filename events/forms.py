@@ -56,7 +56,7 @@ class StyleFormMixin:
             field.widget.attrs.update({'class': self.common_class})
             
             if isinstance(field.widget, forms.TextInput):
-                field.widget.attrs.update({'placeholder': f"Enter {field.label.lower()}"})
+                field.widget.attrs.update({'placeholder': f"Enter  {field.label.lower()}"})
             elif isinstance(field.widget, forms.Textarea):
                 field.widget.attrs.update({'placeholder': f"Enter {field.label.lower()}", 'rows': 5})
             elif isinstance(field.widget, forms.DateInput):

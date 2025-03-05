@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Profile</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .bg-gradient-to-b {
+        background-image: linear-gradient(to bottom, #1f2937, #111827);
+      }
+      .hover-shadow:hover {
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-900 text-gray-200 ">
+    <!-- Navbar Section -->
+<nav class="bg-gray-800 shadow-lg">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex justify-between">
+      <div class="flex space-x-4">
+        <!-- Logo -->
+        <div>
+          <a href="#" class="flex items-center py-5 px-2 text-white font-bold text-lg">
+             EventPro
+          </a>
+        </div>
+        <!-- Primary Navbar items -->
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="{% url 'home' %}" class="py-5 px-3 text-gray-300 hover:text-white">Home</a>
+          <a href="{% url 'dashboard' %}" class="py-5 px-3 text-gray-300 hover:text-white">Dashboard</a>
+          <a href="{% url 'home' %}?type=Total_Events" class="py-5 px-3 text-gray-300 hover:text-white">Events</a>
+          <a href="#" class="py-5 px-3 text-gray-300 hover:text-white">Settings</a>
+        </div>
+      </div>
+      <!-- Secondary Navbar items -->
+      <div class="hidden md:flex items-center space-x-4">
+        <form action="{% url 'log-out' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Log out</button>
+      </form>
+      </div>
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button id="mobile-menu-button" class="text-gray-300 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu (hidden by default) -->
+  <div id="mobile-menu" class="md:hidden hidden">
+    <a href="{% url 'home' %}" class="py-5 px-3 text-gray-300 hover:text-white">Home</a>
+    <a href="{% url 'dashboard' %}" class="py-5 px-3 text-gray-300 hover:text-white">Dashboard</a>
+    <a href="{% url 'home' %}?type=Total_Events" class="py-5 px-3 text-gray-300 hover:text-white">Events</a>
+    <a href="#" class="py-5 px-3 text-gray-300 hover:text-white">Settings</a>
+    <form action="{% url 'log-out' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Log out</button>
+  </form>
+  </div>
+</nav>
+    <div class="max-w-4xl mx-auto bg-gradient-to-b shadow-lg rounded-lg overflow-hidden mt-10 p-4">
+      <div class="flex flex-col md:flex-row items-center">
+        
+        <img class="w-full rounded h-56 md:h-64 md:w-1/3 object-cover object-center hover-shadow transition duration-300"
+     src="{% if profile_picture %}{{ profile_picture }}{% else %}https://ibb.co/0R9pT3F4{% endif %}"
+     alt="Profile Image"/>
+        <div class="p-6 md:w-2/3">
+          <h2 class="text-2xl font-semibold text-white">{{ username|default:"Your Name " }}</h2>
+          <p class="text-gray-400 mt-2">📧 {{ email|default:"Your Email " }}</p>
+          <p class="text-gray-300 mt-4">
+            {{ bio|default:"Hello! I'm a passionate developer with a love for building efficient and scalable applications. I specialize in web development, focusing on both frontend and backend technologies. Continuously learning and exploring new tools to improve my craft. Let's build something amazing together!" }}
+          </p>
+          <div class="flex mt-4 space-x-4">
+            <p class="text-gray-400"><i class="fas fa-phone"></i> {{ phone|default:"N/A" }}</p>
+            <p class="text-gray-400"><i class="fas fa-map-marker-alt"></i> {{ address|default:"N/A" }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Skills Section -->
+     <div class="max-w-4xl mx-auto mt-10 p-4">
+        <h2 class="text-xl font-semibold text-white">Skills</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+            <h3 class="text-lg font-medium text-white">HTML & CSS</h3>
+            <p class="text-gray-300 mt-2">Expert in HTML5 and CSS3, creating responsive layouts.</p>
+          </div>
+          <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+            <h3 class="text-lg font-medium text-white">JavaScript</h3>
+            <p class="text-gray-300 mt-2">Proficient in JavaScript and modern frameworks like React.js.</p>
+          </div>
+          <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+            <h3 class="text-lg font-medium text-white">Django</h3>
+            <p class="text-gray-300 mt-2">Experienced in building scalable web applications using Django.</p>
+          </div>
+          <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+            <h3 class="text-lg font-medium text-white">Tailwind CSS</h3>
+            <p class="text-gray-300 mt-2">Skilled in Tailwind CSS for rapid UI development.</p>
+          </div>
+          <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+            <h3 class="text-lg font-medium text-white">Version Control</h3>
+            <p class="text-gray-300 mt-2">Experienced in Git and GitHub for version control.</p>
+          </div>
+          <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+            <h3 class="text-lg font-medium text-white">Problem Solving</h3>
+            <p class="text-gray-300 mt-2">Strong analytical and problem-solving skills.</p>
+          </div>
+        </div>
+      </div>
+
+    <!-- Skills Section -->
+    {% comment %} <div class="max-w-4xl mx-auto mt-10">
+        <h2 class="text-xl font-semibold text-white">Skills</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {% if profile.skills.all %}
+            {% for skill in profile.skills.all %}
+              <div class="bg-gray-700 p-4 shadow hover-shadow rounded transition duration-300">
+                <h3 class="text-lg font-medium text-white">{{ skill.name }}</h3>
+                <p class="text-gray-300 mt-2">{{ skill.description }}</p>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-gray-400">No skills added yet.</p>
+          {% endif %}
+        </div>
+      </div> {% endcomment %}
+
+    <!-- Profile Update Form -->
+    {% comment %} <div class="max-w-4xl mx-auto mt-6 p-6 bg-gray-800 rounded-lg shadow-lg">
+      <h2 class="text-xl font-semibold text-white mb-4">Update Your Profile</h2>
+      <form method="post" enctype="multipart/form-data"  class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+          Update Profile
+        </button>
+      </form>
+    </div> {% endcomment %}
+
+    <footer class="bg-gray-800 text-gray-300 mt-10 p-10">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Column 1: Company Info -->
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-4">EventPro</h2>
+          <p class="text-gray-400">
+            Your ultimate solution for event management. Make your events
+            unforgettable with us.
+          </p>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-4">Quick Links</h2>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="hover:text-white transition">About Us</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Our Services</a>
+            </li>
+            <li><a href="#" class="hover:text-white transition">Pricing</a></li>
+            <li><a href="#" class="hover:text-white transition">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Social Media -->
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-4">Follow Us</h2>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-facebook text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-instagram text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition">
+              <i class="fab fa-linkedin text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <hr class="border-gray-600 my-6" />
+
+      <div class="text-center text-gray-400">
+        <p>&copy; 2025 EventPro. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("mobile-menu-button").addEventListener("click", function () {
+        var menu = document.getElementById("mobile-menu");
+        menu.classList.toggle("hidden");
+      });
+    </script>
+  </body>
+</html>

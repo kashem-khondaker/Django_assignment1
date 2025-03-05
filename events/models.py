@@ -2,7 +2,7 @@ from django.db import models
 from categories.models import Categories
 from datetime import date
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
+from django.conf import settings  
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -14,7 +14,7 @@ class Event(models.Model):
     image = models.ImageField(upload_to='event_images/', default='event_images/default.jpg')
 
     # RSVP System
-    rsvped_users = models.ManyToManyField(User, related_name='rsvped_events', blank=True)
+    rsvped_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='rsvped_events', blank=True)  # Use custom user model here
 
     def clean(self):
         super().clean()

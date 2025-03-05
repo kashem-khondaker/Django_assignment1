@@ -6,7 +6,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from events.models import Event
 from .models import Participant
-
+from Participants.models import CustomUser
 
 @receiver(m2m_changed, sender=Event.rsvped_users.through)
 def send_rsvp_confirmation(sender, instance, action, pk_set, **kwargs):
@@ -37,7 +37,7 @@ def send_rsvp_email(sender, instance, action, **kwargs):
 
 
 
-@receiver(post_save , sender = User)
+@receiver(post_save , sender=settings.AUTH_USER_MODEL )
 def send_activation_email(sender , instance , created , **kwargs):
     if created:
         token = default_token_generator.make_token(instance)
@@ -53,7 +53,7 @@ def send_activation_email(sender , instance , created , **kwargs):
             print(f"Failed to send email to {instance.email} : {str(E)}")
 
 
-@receiver(post_save , sender=User)
+@receiver(post_save , sender=settings.AUTH_USER_MODEL )
 def assign_role(sender , instance , created , **kwargs):
     if created:
         user_group , created = Group.objects.get_or_create(name="User")

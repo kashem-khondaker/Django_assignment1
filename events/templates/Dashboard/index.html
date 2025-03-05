@@ -13,14 +13,18 @@
             font-family: 'Mona Sans', sans-serif;
         }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 </head>
 <body >
     <nav class="bg-gray-800 p-4">
       <div class="container mx-auto flex justify-between items-center">
-          <a href="{% url 'home' %}?type=Total_Events"  class="text-white text-lg font-bold">Event Management</a>
+          <a href="{% url 'home' %}?type=Total_Events"  class="text-white text-lg font-bold">EventPro </a>
           <div class="hidden md:flex items-center space-x-4">
               <a href="{% url 'home' %}?type=Total_Events" class="text-gray-300 hover:text-white"></i> Home</a>
-              <a href="{% url 'Organizer_Dashboard' %}?type=Total_Events"  class="text-gray-300 hover:text-white">Dashboard</a>
+              <a href="{% url 'dashboard' %}?type=Total_Events"  class="text-gray-300 hover:text-white">Dashboard</a>
               <a href="{% url 'log-in' %}" class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</a>
           </div>
           <!-- Mobile Menu Button -->
@@ -35,7 +39,7 @@
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-4">
           <a href="{% url 'home' %}?type=Total_Events" class="block text-gray-300 hover:text-white">Home</a>
-          <a href="{% url 'Organizer_Dashboard' %}" class="block text-gray-300 hover:text-white">Dashboard</a>
+          <a href="{% url 'dashboard' %}" class="block text-gray-300 hover:text-white">Dashboard</a>
           <a href="{% url 'log-in' %}" class="block px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg w-full">Log In</a>
       </div>
   </nav>
@@ -48,5 +52,58 @@
       });
   </script>
     {% block content %}{% endblock content %}
+
+    <footer class="bg-gray-800 text-gray-300 mt-8 p-10">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Column 1: Company Info -->
+          <div>
+            <h2 class="text-xl font-semibold text-white mb-4">EventPro</h2>
+            <p class="text-gray-400">
+              Your ultimate solution for event management. Make your events
+              unforgettable with us.
+            </p>
+          </div>
+  
+          <!-- Column 2: Quick Links -->
+          <div>
+            <h2 class="text-xl font-semibold text-white mb-4">Quick Links</h2>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="hover:text-white transition">About Us</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-white transition">Our Services</a>
+              </li>
+              <li><a href="#" class="hover:text-white transition">Pricing</a></li>
+              <li><a href="#" class="hover:text-white transition">Contact</a></li>
+            </ul>
+          </div>
+  
+          <!-- Column 3: Social Media -->
+          <div>
+            <h2 class="text-xl font-semibold text-white mb-4">Follow Us</h2>
+            <div class="flex space-x-4 ">
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-linkedin text-xl"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+  
+        <hr class="border-gray-600 my-6" />
+  
+        <div class="text-center text-gray-400">
+          <p>&copy; 2025 EventPro. All rights reserved.</p>
+        </div>
+      </footer> 
 </body>
 </html>

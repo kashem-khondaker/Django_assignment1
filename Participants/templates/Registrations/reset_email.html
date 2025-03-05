@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <style>
+        /* Inline CSS for better email client support */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        .header {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 25px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .body {
+            padding: 25px;
+            color: #333333;
+            text-align: center;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            color: #777777;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .text-muted {
+            font-size: 14px;
+            color: #666666;
+            margin-top: 15px;
+        }
+        .contact {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .contact:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            🔒 Password Reset Request
+        </div>
+        <div class="body">
+            <p>Hello <strong>{{ user.get_full_name|default:user.username }}</strong>,</p>
+            <p>You recently requested to reset your password for your account.</p>
+            <p>Click the button below to reset it:</p>
+            <p>
+                <a href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}" class="button">
+                    Reset Password
+                </a>
+            </p>
+            <p class="text-muted">If you did not request this, please ignore this email. This link will expire in 24 hours.</p>
+        </div>
+        <div class="footer">
+            &copy; {{ year }} <strong>Task Manager</strong>. All rights reserved. <br>
+            Need help? Contact us at <a href="mailto:support@taskmanager.com" class="contact">support@taskmanager.com</a>.
+        </div>
+    </div>
+</body>
+</html>

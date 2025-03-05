@@ -8,6 +8,11 @@ from Participants.models import Participant
 from events.models import Event
 from datetime import date,timezone
 from django.contrib.auth.decorators import login_required , user_passes_test
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+
 
 def Event_view(request):
     return render(request, 'events/events.html')  

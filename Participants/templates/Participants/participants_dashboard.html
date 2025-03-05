@@ -18,10 +18,31 @@
 
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gray-800 text-white w-64 p-6 hidden md:block transition-all duration-300">
-            <h2 class="text-2xl font-semibold mb-8">Participant </h2>
 
             <div class="space-y-6">
                 <!-- Events Section -->
+                <!-- User Profile Section -->
+                <div  class="mb-6 mx-auto">
+                    <a href="{% url 'profile' %}" class="relative group">
+                        <div class="w-24 h-24 rounded-full border-4 border-blue-500 overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:border-blue-400">
+                            <img src="{{ request.user.profile.profile_picture.url }}" 
+                                alt="Profile Picture" 
+                                class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- Hover Effect -->
+                        <div class="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                            <p class="text-white text-sm font-semibold">View Profile</p>
+                        </div>
+                    </a>
+                    <div class="space-y-2 mt-3">
+                        <a href="{% url 'update_profile' %}" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Edit profile</a>
+                        <a href="{% url 'password_change' %}" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">change password </a>
+                        <a href="{% url 'password_reset' %}" class="block text-gray-300 p-2 rounded hover:bg-gray-700 hover:text-white">Reset password </a>
+                    </div>
+                </div>
+
+
                 <div>
                     <h3 class="text-lg font-medium text-gray-300 flex items-center gap-2">
                          Events
@@ -36,7 +57,7 @@
                 <div class="mt-6">
                     <h3 class="text-lg font-medium text-gray-300">Account</h3>
                     <div class="mt-4 space-y-3">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700 transition duration-200">Profile</a>
+                        <a href="{% url 'profile' %}" class="block py-2 px-4 rounded hover:bg-gray-700 transition duration-200">Profile</a>
                         <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700 transition duration-200">Settings</a>
                     </div>
                 </div>
@@ -59,9 +80,13 @@
             <!-- Navbar -->
             <div class="flex justify-between items-center ring-1 ring-blue-500/50 p-4 shadow-sm rounded-lg">
                 <h1 class="text-2xl font-semibold text-white">Dashboard</h1>
-                <div>
+                <div class="flex gap-4">
                     <a href="{% url 'home' %}" class="inline-block transition whitespace-nowrap px-4 py-2  shadow-blue-500/50  text-white rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transform hover:scale-105 transition duration-300">Home</a>
-                    <a href="{% url 'log-out' %}" class="inline-block transition whitespace-nowrap px-4 py-2  shadow-red-500/50  text-white rounded-lg shadow-md hover:bg-red-600 hover:shadow-lg transform hover:scale-105 transition duration-300">Log Out</a>
+                    
+                    <form action="{% url 'log-out' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="inline-block transition whitespace-nowrap px-4 py-2  shadow-red-500/50  text-white rounded-lg shadow-md hover:bg-red-600 hover:shadow-lg transform hover:scale-105 transition duration-300">Log Out</button>
+                    </form>
                 </div>
             </div>
 

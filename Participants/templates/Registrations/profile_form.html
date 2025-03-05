@@ -1,0 +1,30 @@
+{% extends "Dashboard/index.html" %}
+
+{% block title %}Profile create or update {% endblock %}
+{% block content %}
+
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-bold text-center mb-4">Update Your Profile</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-4">
+                    <label class="block font-semibold text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-red-500 text-sm">{{ field.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+                Update Profile
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

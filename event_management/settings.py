@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://event_manager_db_1zj8_user:uSNRZi1UWSjuq1vdJFF7EZs2oRSNbA8p@dpg-cuj26m1u0jms73dfibag-a.oregon-postgres.render.com/event_manager_db_1zj8',        
+        default='postgresql://event_manager_db_3uev_user:LjdinOrBUfAkAIO0H7QMvJ48YCgQ8yFI@dpg-cv3atta3esus73detfjg-a.oregon-postgres.render.com/event_manager_db_3uev',        
         conn_max_age=600    
     )}
 
@@ -151,3 +151,6 @@ FRONTEND_URL = 'https://event-management-4g6w.onrender.com/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+# LOGOUT_REDIRECT_URL = '/home/'
+AUTH_USER_MODEL = 'Participants.CustomUser'
+LOGIN_URL = '/participants/log-in/'
