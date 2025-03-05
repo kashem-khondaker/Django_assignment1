@@ -96,6 +96,7 @@ def delete_participant(request , id):
 
 
 # Registrations for every participants
+"""
 
 def User_Registrations(request):
     if request.method == 'POST' :
@@ -113,6 +114,31 @@ def User_Registrations(request):
         form = RegistrationsForm()
     
     return render(request , 'Registrations/User_Sign_up.html' , {'form':form})
+
+"""
+
+
+
+class User_Registrations(View):
+
+    template_name = 'Registrations/User_Sign_up.html'
+    
+    def get(self, request):
+        form = RegistrationsForm()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = RegistrationsForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.set_password(form.cleaned_data.get('password1'))
+            user.save()
+            
+            messages.success(request, "User Registration successfully. Please check your email to activate your account!")
+            return redirect('home')
+        
+        return render(request, self.template_name, {'form': form})
 
 
 def activate_account(request, user_id, token):
